@@ -1,0 +1,49 @@
+$paddings: 40px 0px
+
+.calendar
+    width: 100%
+    border: 1px solid #ccc
+    border-radius: 4px
+    padding: 10spx
+    margin: 10px 0
+
+.flexContainer
+    display: flex
+    flex-wrap: wrap
+    align-items: flex-end
+
+.flexItemHeader
+    flex-basis: calc(100% / 7)
+    text-align: center
+    padding: $paddings
+    // border: 1px solid #ccc
+
+.flexItem
+    flex-basis: calc(100% / 7)
+    text-align: right
+    padding: $paddings
+    cursor: pointer
+    background-color: #fff
+    font-size: 1.2em
+    &:hover
+        background-color: #eee
+
+.flexItemEmtyDay
+    flex-basis: calc(100% / 7)
+    text-align: center
+    padding: $paddings
+    background-color: #fff
+
+.itemToday
+    text-align: right
+    display: flex
+    justify-content: flex-end
+    p
+        width: 30px
+        height: 30px
+        border-radius: 50%
+        background-color: blue
+        display: flex
+        justify-content: center
+        align-items: center
+        color: white

@@ -34,7 +34,7 @@ export default function index({}: Props) {
       <button onClick={prevMouth}>-</button>
       <button onClick={nowMouth}>now</button>
       <button onClick={nextMouth}>+</button>
-      <div style={{ padding: "1rem" }}>
+      <div>
         <Calendar currentDate={currentDate} skipMouth={skipMouth} />
       </div>
     </div>

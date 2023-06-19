@@ -1,0 +1,82 @@
+.form
+    display: flex
+    flex-wrap: wrap
+    flex-direction: column
+
+    & > input
+        flex: 1
+        margin: .5rem
+
+    &[type="email"]
+        flex: 3 1 30ch
+
+    input
+        border: none
+        background: hsl(0 0% 93%)
+        border-radius: .25rem
+        padding: .75rem 1rem
+
+    &[type="submit"]
+        background: hotpink
+        color: white
+        box-shadow: 0 .75rem .5rem -.5rem hsl(0 50% 80%)
+
+    //textarea
+    textarea
+        resize: none
+        min-height: 3rem
+        padding: 1rem
+        flex: 1
+        margin: .5rem
+        border-radius: .25rem
+        background: hsl(0 0% 93%)
+        border: none
+
+// Variables
+$checkbox-size: 20px
+$checkbox-border: #cecece
+$checkbox-selected: #02BB72 // Primary colour
+
+.checkbox_group
+    display: flex
+    flex-direction: column
+    margin: 1rem 0rem
+
+    & > label
+        display: flex
+        align-items: center
+        margin: .5rem 0
+
+        & > input
+            margin-right: .5rem
+
+        & > span
+            font-size: .9rem
+
+    & > label:first-child
+        margin-top: 0
+
+    & > label:last-child
+        margin-bottom: 0
+
+    & > label:not(:last-child)
+        margin-bottom: .5rem
+
+    & > label:not(:first-child)
+        margin-top: .5rem
+
+    & > label > input
+        width: $checkbox-size
+        height: $checkbox-size
+        border: 1px solid $checkbox-border
+        border-radius: 3px
+        appearance: none
+        outline: none
+        cursor: pointer
+
+        &:checked
+            background: $checkbox-selected
+            border-color: $checkbox-selected
+
+    & > label > span
+        font-size: .9rem

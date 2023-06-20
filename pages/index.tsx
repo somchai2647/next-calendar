@@ -6,8 +6,15 @@ import axios from "axios";
 
 type Props = {};
 
+const fetcher = url => fetch(url).then(r => r.json())
+
 export default function index({}: Props) {
   const [skipMouth, setSkipMouth] = useState(0);
+
+  //useSWR
+  const { data, error } = useSWR("/api/calendar", fetcher);
+
+  console.log(data)
 
   async function getCalendar() {
     const res = await axios.get("/api/calendar");

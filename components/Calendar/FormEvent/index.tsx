@@ -1,7 +1,8 @@
 import React, { useState, useEffect, use } from "react";
 import styles from "./FormEvent.module.sass";
 import { useForm } from "react-hook-form";
-
+import dayjs from "dayjs";
+dayjs.locale("th");
 type Props = {
   onClick: Function | any;
 };
@@ -22,19 +23,25 @@ export default function FormEvent({ onClick }: Props) {
 
   function onSave(e: any) {
     //convert to timestamp
-    e = {
-      ...e,
-      startDate: new Date(e.startDate).getTime(),
-      endDate: new Date(e.endDate).getTime(),
-    };
+    const { startDate, endDate, startTime, endTime, name, detail } = e;
 
-    // if (!watchAllDay) {
-    //   e = {
-    //     ...e,
-    //     startTime: new Date(e.startTime).getTime(),
-    //     endTime: new Date(e.endTime).getTime(),
-    //   };
-    // }
+    console.log(startDate, endDate, startTime, endTime);
+
+    const startDateString = watchAllDay
+      ? startDate
+      : `${startDate} ${startTime}`;
+    const endDateString = watchAllDay ? endDate : `${endDate} ${endTime}`;
+
+    const startDateStringTimestamp = dayjs(startDateString).toDate().getTime();
+    const endDateStringTimestamp = dayjs(endDateString).toDate().getTime();
+
+    e = {
+      name,
+      detail,
+      allDay: watchAllDay,
+      startDate: startDateStringTimestamp,
+      endDate: endDateStringTimestamp,
+    };
 
     console.log(e);
   }

@@ -5,10 +5,10 @@ import { CallBackDate } from "./interface";
 
 type Props = {
   currentDate: Date;
-  skipMouth?: number;
+  skipMonth?: number;
 };
 
-export default function Calendar({ currentDate, skipMouth = 0 }: Props) {
+export default function Calendar({ currentDate, skipMonth = 0 }: Props) {
   const [page, setPage] = useState(1);
 
   function handleClicked(data: CallBackDate) {
@@ -33,7 +33,7 @@ export default function Calendar({ currentDate, skipMouth = 0 }: Props) {
       {page === 1 && (
         <MainCalendar
           currentDate={currentDate}
-          skipMouth={skipMouth}
+          skipMonth={skipMonth}
           onClick={handleClicked}
         />
       )}

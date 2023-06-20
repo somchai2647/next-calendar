@@ -4,13 +4,13 @@ import { CallBackDate } from "../interface";
 
 type Props = {
   currentDate: Date;
-  skipMouth?: number;
+  skipMonth?: number;
   onClick?: Function | any | CallBackDate;
 };
 
 export default function MainCalendar({
   currentDate,
-  skipMouth = 0,
+  skipMonth = 0,
   onClick,
 }: Props) {
   // Create an array of weekdays
@@ -31,7 +31,7 @@ export default function MainCalendar({
   const today = currentDate.getDate();
 
   // Get the current month
-  const currentMonth = currentDate.getMonth() + skipMouth;
+  const currentMonth = currentDate.getMonth() + skipMonth;
 
   // Get the current year
   const currentYear = currentDate.getFullYear();

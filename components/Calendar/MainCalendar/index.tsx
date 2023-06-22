@@ -3,15 +3,25 @@ import styles from "./MainCalendar.module.sass";
 import { CallBackDate } from "../interface";
 
 type Props = {
-  currentDate: Date;
   skipMonth?: number;
   onClick?: Function | any | CallBackDate;
+  data?: any;
 };
 
+interface myData {
+  id: string;
+  name: string;
+  detail: string;
+  allDay: boolean;
+  startDate: number;
+  endDate: number;
+  bgColor: string;
+}
+
 export default function MainCalendar({
-  currentDate,
   skipMonth = 0,
   onClick,
+  data = [],
 }: Props) {
   // Create an array of weekdays
   const weekdays = {
@@ -26,12 +36,13 @@ export default function MainCalendar({
     ],
     th: ["อาทิตย์", "จันทร์", "อังคาร", "พุธ", "พฤหัสบดี", "ศุกร์", "เสาร์"],
   };
+  const currentDate = new Date();
 
   // Get to day
   const today = currentDate.getDate();
 
   // Get the current month
-  const currentMonth = currentDate.getMonth() + skipMonth;
+  const currentMonth = currentDate.getMonth();
 
   // Get the current year
   const currentYear = currentDate.getFullYear();
@@ -57,6 +68,7 @@ export default function MainCalendar({
 
   return (
     <div className={styles.calendar}>
+      {JSON.stringify(data)}
       <div className={styles.flexContainer}>
         {weekdays["th"].map((weekday, index) => (
           <div key={index} className={styles.flexItemHeader}>
@@ -75,9 +87,78 @@ export default function MainCalendar({
             onClick={() => handleClick(day + 1)}
           >
             <p>{day + 1}</p>
+            <div className={styles.events}>
+              <Events
+                data={data}
+                timestamp={dateToTimestamp(
+                  day + 1,
+                  currentMonth + 1,
+                  currentYear
+                )}
+              />
+            </div>
           </div>
         ))}
       </div>
     </div>
   );
 }
+
+function dateToTimestamp(day: number, month: number, year: number) {
+  // Create a new Date object with the provided values
+  var date = new Date(year, month, day);
+
+  // Get the timestamp value in milliseconds
+  var timestamp = date.getTime();
+
+  // Return the timestamp
+  return timestamp;
+}
+
+function Events({ data, timestamp }: { data: myData[]; timestamp: number }) {
+  const events = data.filter((item) => item.startDate === timestamp);
+
+  return events.map((event) => (
+    <>
+      <div
+        key={event.id}
+        className={styles.event}
+        style={{ backgroundColor: event.bgColor }}
+      >
+        {event.name}
+      </div>
+      <div
+        key={event.id}
+        className={styles.event}
+        style={{ backgroundColor: event.bgColor }}
+      >
+        {event.name}
+      </div>
+    </>
+  ));
+}
+
+// function hasEvent(data: myData[], timestamp: number) {
+//   //timestamp = 1689872400000 is include in data array object
+
+//   const events = data.filter((item) => item.startDate === timestamp);
+
+//   const Event = (e: myData) => (
+//     <div
+//       key={e.id}
+//       className={styles.event}
+//       style={{ backgroundColor: e.bgColor }}
+//     >
+//       {e.name}
+//     </div>
+//   );
+
+//   return events.map((event) => <Event {...event} />);
+
+//   // if (event)
+//   //   return (
+//   //
+//   //   );
+
+//   // return "";
+// }

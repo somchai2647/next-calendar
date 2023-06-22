@@ -6,44 +6,41 @@ import axios from "axios";
 
 type Props = {};
 
-const fetcher = url => fetch(url).then(r => r.json())
+const fetcher = (url) => fetch(url).then((r) => r.json());
 
 export default function index({}: Props) {
-  const [skipMouth, setSkipMouth] = useState(0);
+  const [skipMonth, setSkipMonth] = useState(0);
 
   //useSWR
   const { data, error } = useSWR("/api/calendar", fetcher);
 
-  console.log(data)
+  console.log(data);
 
   async function getCalendar() {
     const res = await axios.get("/api/calendar");
     console.log("=>", await res.data);
   }
 
-  const currentDate = new Date();
-
-  function nextMouth() {
-    setSkipMouth(skipMouth + 1);
+  function nextMonth() {
+    setSkipMonth(skipMonth + 1);
   }
 
-  function prevMouth() {
-    setSkipMouth(skipMouth - 1);
+  function prevMonth() {
+    setSkipMonth(skipMonth - 1);
   }
 
-  function nowMouth() {
-    setSkipMouth(0);
+  function nowMonth() {
+    setSkipMonth(0);
   }
 
   return (
     <div>
       <button onClick={getCalendar}>Click</button>
-      <button onClick={prevMouth}>-</button>
-      <button onClick={nowMouth}>now</button>
-      <button onClick={nextMouth}>+</button>
-      <div>
-        <Calendar currentDate={currentDate} skipMouth={skipMouth} />
-      </div>
+      <button onClick={prevMonth}>-</button>
+      <button onClick={nowMonth}>now</button>
+      <button onClick={nextMonth}>+</button>
+      {skipMonth}
+      <div>{data && <Calendar skipMonth={skipMonth} data={data} />}</div>
     </div>
   );
 }

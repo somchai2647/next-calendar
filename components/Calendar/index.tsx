@@ -4,11 +4,11 @@ import FormEvent from "./FormEvent";
 import { CallBackDate } from "./interface";
 
 type Props = {
-  currentDate: Date;
   skipMonth?: number;
+  data?: any;
 };
 
-export default function Calendar({ currentDate, skipMonth = 0 }: Props) {
+export default function Calendar({ skipMonth = 0, data = [] }: Props) {
   const [page, setPage] = useState(1);
 
   function handleClicked(data: CallBackDate) {
@@ -32,7 +32,7 @@ export default function Calendar({ currentDate, skipMonth = 0 }: Props) {
     <React.Fragment>
       {page === 1 && (
         <MainCalendar
-          currentDate={currentDate}
+          data={data}
           skipMonth={skipMonth}
           onClick={handleClicked}
         />

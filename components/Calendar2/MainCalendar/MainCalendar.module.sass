@@ -1,0 +1,74 @@
+$paddings: 40px 0px
+
+.calendar
+    width: 100%
+    border: 1px solid #ccc
+    border-radius: 4px
+    padding: 10spx
+    margin: 10px 0
+    max-height: 100%
+
+.flexContainer
+    display: flex
+    flex-wrap: wrap
+    align-items: flex-end
+
+    .flexItemHeader
+        flex-basis: calc(100% / 7)
+        text-align: center
+        padding: $paddings
+        // border: 1px solid #ccc
+
+    .flexItem
+        flex-basis: calc(100% / 7)
+        text-align: right
+        padding: $paddings
+        background-color: #fff
+        font-size: 1.2em
+        position: relative
+        flex-basis: 14.285%
+        // max-height: 5rem
+        // max-width: 12rem
+
+        &:hover
+            background-color: #eee
+
+    .flexItemEmtyDay
+        flex-basis: calc(100% / 7)
+        text-align: center
+        padding: $paddings
+        background-color: #fff
+
+    .itemToday
+        text-align: right
+        display: flex
+        justify-content: flex-end
+        p
+            width: 30px
+            height: 30px
+            border-radius: 50%
+            background-color: blue
+            display: flex
+            justify-content: center
+            align-items: center
+            color: white
+
+    .events
+        display: flex
+        flex-direction: column
+        // max-height: 10px
+        // overflow-y: hidden
+        gap: 5px
+
+    .event
+        // position: absolute
+        background-color: #3a86ff
+        font-size: 12pt
+        padding: 0px 10px
+        border-radius: 4px
+        color: white
+        width: 90%
+
+        &:hover
+            // background-color: #3aff3a
+            cursor: pointer

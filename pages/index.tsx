@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Calendar from "../components/Calendar";
+import Calendar from "../components/Calendar2";
 import { api } from "../libs";
 import useSWR from "swr";
 import axios from "axios";

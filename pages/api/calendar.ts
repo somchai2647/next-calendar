@@ -1,21 +1,12 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-
-interface myData {
-  id: string;
-  name: string;
-  detail: string;
-  allDay: boolean;
-  startDate: number;
-  endDate: number;
-  bgColor: string;
-}
+import { calendarData } from "../../components/Calendar/interface";
 
 export default function handler(
   req: NextApiRequest,
-  res: NextApiResponse<myData[]>
+  res: NextApiResponse<calendarData[]>
 ) {
-  const fakeDate: myData[] = [
+  const fakeDate: calendarData[] = [
     {
       id: "12312321",
       name: "EventLastWeekofMouth",
@@ -32,7 +23,7 @@ export default function handler(
       allDay: true,
       startDate: 1689872400000,
       endDate: 1689872400000,
-      bgColor: "#8338ec",
+      bgColor: "#f4a261",
     },
     {
       id: "43312343",
@@ -41,7 +32,7 @@ export default function handler(
       allDay: true,
       startDate: 1689872400000,
       endDate: 1689872400000,
-      bgColor: "#8338ec",
+      bgColor: "#d62828",
     },
     {
       id: "43312321",

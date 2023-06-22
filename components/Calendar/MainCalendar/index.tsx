@@ -1,22 +1,12 @@
 import React, { useState } from "react";
 import styles from "./MainCalendar.module.sass";
-import { CallBackDate } from "../interface";
+import { CallBackDate, calendarData } from "../interface";
 
 type Props = {
   skipMonth?: number;
   onClick?: Function | any | CallBackDate;
   data?: any;
 };
-
-interface myData {
-  id: string;
-  name: string;
-  detail: string;
-  allDay: boolean;
-  startDate: number;
-  endDate: number;
-  bgColor: string;
-}
 
 export default function MainCalendar({
   skipMonth = 0,
@@ -68,7 +58,7 @@ export default function MainCalendar({
 
   return (
     <div className={styles.calendar}>
-      {JSON.stringify(data)}
+      {/* {JSON.stringify(data)} */}
       <div className={styles.flexContainer}>
         {weekdays["th"].map((weekday, index) => (
           <div key={index} className={styles.flexItemHeader}>
@@ -115,18 +105,29 @@ function dateToTimestamp(day: number, month: number, year: number) {
   return timestamp;
 }
 
-function Events({ data, timestamp }: { data: myData[]; timestamp: number }) {
+function Events({
+  data,
+  timestamp,
+}: {
+  data: calendarData[];
+  timestamp: number;
+}) {
   const events = data.filter((item) => item.startDate === timestamp);
+
+  if (events.length > 3)
+    return (
+      <>
+        <div
+          className={styles.event}
+          // style={{ backgroundColor: event.bgColor }}
+        >
+          {events.length} กิจกรรม
+        </div>
+      </>
+    );
 
   return events.map((event) => (
     <>
-      <div
-        key={event.id}
-        className={styles.event}
-        style={{ backgroundColor: event.bgColor }}
-      >
-        {event.name}
-      </div>
       <div
         key={event.id}
         className={styles.event}

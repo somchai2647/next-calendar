@@ -57,39 +57,40 @@ export default function MainCalendar({
   }
 
   return (
-    <div className={styles.calendar}>
-      {/* {JSON.stringify(data)} */}
-      <div className={styles.flexContainer}>
+    <div className={styles.calendar_wrapper}>
+      <ol className={styles.calendar}>
         {weekdays["th"].map((weekday, index) => (
-          <div key={index} className={styles.flexItemHeader}>
+          <li key={index} className={styles.dayName}>
             {weekday}
-          </div>
+          </li>
         ))}
         {Array.from({ length: firstDayOfMonth }).map((_, index) => (
-          <div className={styles.flexItemEmtyDay} key={"emptyDay" + index} />
+          <div key={"emptyDay" + index} />
         ))}
-        {daysArray.map((day) => (
-          <div
-            className={`${styles.flexItem} ${
-              day + 1 === today ? styles.itemToday : ""
-            }`}
-            key={day + firstDayOfMonth}
-            onClick={() => handleClick(day + 1)}
-          >
-            <p>{day + 1}</p>
-            <div className={styles.events}>
-              <Events
-                data={data}
-                timestamp={dateToTimestamp(
-                  day + 1,
-                  currentMonth + 1,
-                  currentYear
-                )}
-              />
-            </div>
-          </div>
-        ))}
-      </div>
+        {daysArray.map((day, index) => {
+          return (
+            <li className={styles.item}>
+              <span
+                className={`${styles.numberDay} ${
+                  day + 1 === today ? styles.toDay : styles.numberDay
+                }`}
+              >
+                {day + 1}
+              </span>
+              <div className={styles.events}>
+                <Events
+                  data={data}
+                  timestamp={dateToTimestamp(
+                    day + 1,
+                    currentMonth + 1,
+                    currentYear
+                  )}
+                />
+              </div>
+            </li>
+          );
+        })}
+      </ol>
     </div>
   );
 }
@@ -131,7 +132,7 @@ function Events({
       <div
         key={event.id}
         className={styles.event}
-        style={{ backgroundColor: event.bgColor }}
+        style={{ backgroundColor: event.bgColor  }}
       >
         {event.name}
       </div>

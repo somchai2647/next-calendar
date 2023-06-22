@@ -43,6 +43,15 @@ export default function handler(
       endDate: 1689872400000,
       bgColor: "#8338ec",
     },
+    {
+      id: "4331232A",
+      name: "Food",
+      detail: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
+      allDay: true,
+      startDate: 1687366800000,
+      endDate: 1687366800000,
+      bgColor: "#3a86ff",
+    }
   ];
 
   res.status(200).json(fakeDate);

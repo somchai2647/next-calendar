@@ -30,6 +30,7 @@ export default function Calendar({ skipMonth = 0, data = [] }: Props) {
 
   return (
     <React.Fragment>
+      <h2>Calendar 2</h2>
       {page === 1 && (
         <MainCalendar
           data={data}

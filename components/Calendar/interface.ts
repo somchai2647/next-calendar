@@ -5,7 +5,7 @@ export interface CallBackDate {
 }
 
 export interface calendarData {
-  id: string;
+  id?: string;
   title: string;
   detail: string;
   allDay: boolean;

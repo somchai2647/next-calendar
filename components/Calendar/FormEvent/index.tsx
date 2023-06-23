@@ -1,19 +1,27 @@
 import React, { useState, useEffect, use } from "react";
 import styles from "./FormEvent.module.sass";
 import { useForm } from "react-hook-form";
-import dayjs from "dayjs";
-dayjs.locale("th");
+// import dayjs from "dayjs";
+// dayjs.locale("th");
+
+import { calendarData } from "../interface";
+
 type Props = {
   onClick: Function | any;
 };
 
+interface formEvent extends calendarData {
+  startDay: string;
+  endDay: string;
+  startTime: string;
+  endTime: string;
+}
+
 export default function FormEvent({ onClick }: Props) {
   const { register, handleSubmit, watch, setValue } = useForm();
 
-  //react form hook watch allDay
   const watchAllDay = watch("allDay");
 
-  const [allDay, setAllDay] = useState(true);
 
   function handleClick() {
     onClick({
@@ -21,37 +29,28 @@ export default function FormEvent({ onClick }: Props) {
     });
   }
 
-  function onSave(e: any) {
+  function onSave(e: formEvent) {
     //convert to timestamp
-    const { startDate, endDate, startTime, endTime, name, detail } = e;
+    const { startDay, endDay, startTime, endTime, title, detail } = e;
+    console.log("Orginal", e);
 
-    console.log(startDate, endDate, startTime, endTime);
+    let _startDay = startDay;
 
-    const startDateString = watchAllDay
-      ? startDate
-      : `${startDate} ${startTime}`;
-    const endDateString = watchAllDay ? endDate : `${endDate} ${endTime}`;
-
-    const startDateStringTimestamp = dayjs(startDateString).toDate().getTime();
-    const endDateStringTimestamp = dayjs(endDateString).toDate().getTime();
-
-    e = {
-      name,
+    const newObj: calendarData = {
+      title,
       detail,
+      startTimestamp: new Date(`${startDay} ${startTime}`).getTime(),
+      endTimestamp: new Date(`${endDay} ${endTime}`).getTime(),
       allDay: watchAllDay,
-      startDate: startDateStringTimestamp,
-      endDate: endDateStringTimestamp,
+      bgColor: "#000",
     };
 
-    console.log(e);
+    console.log(newObj);
   }
 
   useEffect(() => {
     setValue("allDay", true);
-    setAllDay(true);
   }, []);
-
-  console.log(watchAllDay);
 
   return (
     <>
@@ -65,12 +64,12 @@ export default function FormEvent({ onClick }: Props) {
         </div>
         <label htmlFor="title">เพิ่มชื่อและเวลา</label>
         <input type="text" id="title" {...register("title")} />
-        <label htmlFor="startDate">วันเริ่มต้น</label>
+        <label htmlFor="startDay">วันเริ่มต้น</label>
         <input
           type="date"
-          name="startDate"
-          id="startDate"
-          {...register("startDate")}
+          name="startDay"
+          id="startDay"
+          {...register("startDay")}
         />
         {!watchAllDay && (
           <>
@@ -83,13 +82,8 @@ export default function FormEvent({ onClick }: Props) {
             />
           </>
         )}
-        <label htmlFor="endDate">วันสื้นสุด</label>
-        <input
-          type="date"
-          name="endDate"
-          id="endDate"
-          {...register("endDate")}
-        />
+        <label htmlFor="endDay">วันสื้นสุด</label>
+        <input type="date" name="endDay" id="endDay" {...register("endDay")} />
         {!watchAllDay && (
           <>
             <label htmlFor="endTime">เวลาสิ้นสุด</label>

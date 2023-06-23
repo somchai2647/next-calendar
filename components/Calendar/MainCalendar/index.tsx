@@ -53,7 +53,6 @@ export default function MainCalendar({
       month: currentMonth,
       year: currentYear,
     };
-
     onClick(obj);
   }
 
@@ -70,7 +69,12 @@ export default function MainCalendar({
         ))}
         {daysArray.map((day, index) => {
           return (
-            <li className={styles.item} key={`dayitem-${day}`}>
+            //@ts-ignore
+            <li
+              className={styles.item}
+              key={`dayitem-${day + 1}`}
+              onClick={() => handleClick(day + 1)}
+            >
               <span
                 className={`${styles.numberDay} ${
                   day + 1 === today ? styles.toDay : styles.numberDay
@@ -105,7 +109,7 @@ export default function MainCalendar({
   );
 }
 
-function Events({
+export function Events({
   data,
   day,
   month,
@@ -147,25 +151,21 @@ function Events({
 
   if (events.length > 3)
     return (
-      <>
-        <div
-          className={styles.event}
-          // style={{ backgroundColor: event.bgColor }}
-        >
-          {events.length} กิจกรรม
-        </div>
-      </>
+      <div
+        className={styles.event}
+        // style={{ backgroundColor: event.bgColor }}
+      >
+        {events.length} กิจกรรม
+      </div>
     );
 
   return events.map((event: calendarData) => (
-    <>
-      <div
-        key={event.id}
-        className={styles.event}
-        style={{ backgroundColor: event.bgColor }}
-      >
-        {event.title}
-      </div>
-    </>
+    <div
+      key={event.id}
+      className={styles.event}
+      style={{ backgroundColor: event.bgColor }}
+    >
+      {event.title}
+    </div>
   ));
 }

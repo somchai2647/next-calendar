@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Calendar from "../components/Calendar2";
+import Calendar from "../components/Calendar";
 import { api } from "../libs";
 import useSWR from "swr";
 import axios from "axios";
@@ -13,8 +13,6 @@ export default function index({}: Props) {
 
   //useSWR
   const { data, error } = useSWR("/api/calendar", fetcher);
-
-  console.log(data);
 
   async function getCalendar() {
     const res = await axios.get("/api/calendar");

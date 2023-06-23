@@ -63,8 +63,8 @@ export default function FormEvent({ onClick }: Props) {
             <span>ตลอดทั้งวัน</span>
           </label>
         </div>
-        <label htmlFor="name">เพิ่มชื่อและเวลา</label>
-        <input type="text" id="name" {...register("name")} />
+        <label htmlFor="title">เพิ่มชื่อและเวลา</label>
+        <input type="text" id="title" {...register("title")} />
         <label htmlFor="startDate">วันเริ่มต้น</label>
         <input
           type="date"

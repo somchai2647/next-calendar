@@ -6,10 +6,11 @@ export interface CallBackDate {
 
 export interface calendarData {
   id: string;
-  name: string;
+  title: string;
   detail: string;
   allDay: boolean;
-  startDate: number;
-  endDate: number;
+  startTimestamp: number;
+  endTimestamp: number;
   bgColor: string;
 }
+

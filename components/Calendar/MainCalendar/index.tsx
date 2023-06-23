@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styles from "./MainCalendar.module.sass";
 import { CallBackDate, calendarData } from "../interface";
+import dayjs from "dayjs";
 
 type Props = {
   skipMonth?: number;
@@ -32,7 +33,7 @@ export default function MainCalendar({
   const today = currentDate.getDate();
 
   // Get the current month
-  const currentMonth = currentDate.getMonth();
+  const currentMonth = 1 + currentDate.getMonth();
 
   // Get the current year
   const currentYear = currentDate.getFullYear();
@@ -57,62 +58,92 @@ export default function MainCalendar({
   }
 
   return (
-    <div className={styles.calendar}>
-      {/* {JSON.stringify(data)} */}
-      <div className={styles.flexContainer}>
+    <div className={styles.calendar_wrapper}>
+      <ol className={styles.calendar}>
         {weekdays["th"].map((weekday, index) => (
-          <div key={index} className={styles.flexItemHeader}>
+          <li key={index} className={styles.dayName}>
             {weekday}
-          </div>
+          </li>
         ))}
         {Array.from({ length: firstDayOfMonth }).map((_, index) => (
-          <div className={styles.flexItemEmtyDay} key={"emptyDay" + index} />
+          <div key={"emptyDay" + index} />
         ))}
-        {daysArray.map((day) => (
-          <div
-            className={`${styles.flexItem} ${
-              day + 1 === today ? styles.itemToday : ""
-            }`}
-            key={day + firstDayOfMonth}
-            onClick={() => handleClick(day + 1)}
-          >
-            <p>{day + 1}</p>
-            <div className={styles.events}>
-              <Events
-                data={data}
-                timestamp={dateToTimestamp(
+        {daysArray.map((day, index) => {
+          return (
+            <li className={styles.item} key={`dayitem-${day}`}>
+              <span
+                className={`${styles.numberDay} ${
+                  day + 1 === today ? styles.toDay : styles.numberDay
+                }`}
+              >
+                {day + 1}
+              </span>
+
+              <div className={styles.events}>
+                {/* {checkBetweenDate(dateToTimestamp(
                   day + 1,
-                  currentMonth + 1,
+                  currentMonth,
                   currentYear
-                )}
-              />
-            </div>
-          </div>
-        ))}
-      </div>
+                )) && <>true</>} */}
+                <Events
+                  data={data}
+                  day={day + 1}
+                  month={currentMonth}
+                  year={currentYear}
+                />
+                {/* {getStartOfDay(currentDate)} | {getEndOfDay(currentDate)} | */}
+                {/* {dateToTimestamp(day + 1, currentMonth, currentYear)} */}
+                {/* {dayjs().get("date")} | */}
+                {/* {day + 1} | {currentMonth} | {currentYear} | */}
+                {/* {dateToTimestamp(day + 1, currentMonth, currentYear)} */}
+              </div>
+            </li>
+          );
+        })}
+      </ol>
     </div>
   );
 }
 
-function dateToTimestamp(day: number, month: number, year: number) {
-  // Create a new Date object with the provided values
-  var date = new Date(year, month, day);
-
-  // Get the timestamp value in milliseconds
-  var timestamp = date.getTime();
-
-  // Return the timestamp
-  return timestamp;
-}
-
 function Events({
   data,
-  timestamp,
+  day,
+  month,
+  year,
 }: {
   data: calendarData[];
-  timestamp: number;
+  day: number;
+  month: number;
+  year: number;
 }) {
-  const events = data.filter((item) => item.startDate === timestamp);
+  const startDateDay =
+    dayjs(`${year}-${month}-${day}`).startOf("day").unix() * 1000;
+  const endDateDay =
+    dayjs(`${year}-${month}-${day}`).endOf("day").unix() * 1000;
+
+  const events = data.filter((event: calendarData) => {
+    //check between date
+    if (
+      event.startTimestamp >= startDateDay &&
+      event.startTimestamp <= endDateDay
+    ) {
+      return event;
+    }
+    if (
+      event.endTimestamp >= startDateDay &&
+      event.endTimestamp <= endDateDay
+    ) {
+      return event;
+    }
+    if (
+      event.startTimestamp <= startDateDay &&
+      event.endTimestamp >= endDateDay
+    ) {
+      return event;
+    }
+  });
+
+  // return endDate
 
   if (events.length > 3)
     return (
@@ -126,40 +157,15 @@ function Events({
       </>
     );
 
-  return events.map((event) => (
+  return events.map((event: calendarData) => (
     <>
       <div
         key={event.id}
         className={styles.event}
         style={{ backgroundColor: event.bgColor }}
       >
-        {event.name}
+        {event.title}
       </div>
     </>
   ));
 }
-
-// function hasEvent(data: myData[], timestamp: number) {
-//   //timestamp = 1689872400000 is include in data array object
-
-//   const events = data.filter((item) => item.startDate === timestamp);
-
-//   const Event = (e: myData) => (
-//     <div
-//       key={e.id}
-//       className={styles.event}
-//       style={{ backgroundColor: e.bgColor }}
-//     >
-//       {e.name}
-//     </div>
-//   );
-
-//   return events.map((event) => <Event {...event} />);
-
-//   // if (event)
-//   //   return (
-//   //
-//   //   );
-
-//   // return "";
-// }

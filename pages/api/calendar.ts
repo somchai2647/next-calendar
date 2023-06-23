@@ -8,51 +8,49 @@ export default function handler(
 ) {
   const fakeDate: calendarData[] = [
     {
-      id: "12312321",
-      name: "EventLastWeekofMouth",
-      detail: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
-      allDay: false,
-      startDate: 1690563600000,
-      endDate: 1690650000000,
+      id: "1",
+      title: "Meeting",
+      detail: "Meeting with Andrew Piker",
+      allDay: true,
+      startTimestamp: new Date(2023, 5, 23).getTime(),
+      endTimestamp: new Date(2023, 5, 25).getTime(),
       bgColor: "#3a86ff",
     },
+    // {
+    //   id: "2",
+    //   title: "Shopping",
+    //   detail: "Shopping at Stack",
+    //   allDay: true,
+    //   startTimestamp: new Date(2023, 5, 24).getTime(),
+    //   endTimestamp: new Date(2023, 5, 26).getTime(),
+    //   bgColor: "#ffbe0b",
+    // },
     {
-      id: "43312344",
-      name: "isMonMon3",
-      detail: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
+      id: "3",
+      title: "Test",
+      detail: "Test System",
       allDay: true,
-      startDate: 1689872400000,
-      endDate: 1689872400000,
-      bgColor: "#f4a261",
+      startTimestamp: new Date(2023, 5, 23).getTime(),
+      endTimestamp: new Date(2023, 5, 30).getTime(),
+      bgColor: "#fb5607",
     },
-    {
-      id: "43312343",
-      name: "isMonMon2",
-      detail: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
-      allDay: true,
-      startDate: 1689872400000,
-      endDate: 1689872400000,
-      bgColor: "#d62828",
-    },
-    {
-      id: "43312321",
-      name: "isMonMon",
-      detail: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
-      allDay: true,
-      startDate: 1689872400000,
-      endDate: 1689872400000,
-      bgColor: "#8338ec",
-    },
-    {
-      id: "4331232A",
-      name: "Food",
-      detail: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
-      allDay: true,
-      startDate: 1687366800000,
-      endDate: 1687366800000,
-      bgColor: "#3a86ff",
-    }
+    // {
+    //   id: "4",
+    //   title: "Dinner",
+    //   detail: "Dinner with Andrew Piker",
+    //   allDay: true,
+    //   startTimestamp: new Date(2023, 5, 24).getTime(),
+    //   endTimestamp: new Date(2023, 5, 24).getTime(),
+    //   bgColor: "#ff006e",
+    // }
   ];
 
   res.status(200).json(fakeDate);
 }
+
+//color
+// #3a86ff
+// #ffbe0b
+// #fb5607
+// #ff006e
+// #8338ec

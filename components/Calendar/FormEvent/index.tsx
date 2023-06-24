@@ -2,6 +2,7 @@ import React, { useState, useEffect, use } from "react";
 import styles from "./FormEvent.module.sass";
 import { useForm } from "react-hook-form";
 import { calendarData } from "../interface";
+import axios from "axios";
 
 type Props = {
   onClick: Function | any;
@@ -27,7 +28,7 @@ export default function FormEvent({ onClick }: Props) {
     });
   }
 
-  function onSave(e: formEvent) {
+  async function onSave(e: formEvent) {
     const { startDay, endDay, startTime, endTime, title, detail } = e;
     console.log("Orginal", e);
 
@@ -40,7 +41,10 @@ export default function FormEvent({ onClick }: Props) {
       bgColor: "#000",
     };
 
-    console.log(newObj);
+    const res = await axios.post("/api/calendar", newObj);
+    const data = await res.data;
+
+    console.log("👍", data);
   }
 
   useEffect(() => {

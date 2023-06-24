@@ -80,3 +80,110 @@ $checkbox-selected: #02BB72 // Primary colour
 
     & > label > span
         font-size: .9rem
+
+.select
+    position: relative
+    min-width: 200px
+    margin-top: 1rem
+
+    svg
+        position: absolute
+        right: 12px
+        top: calc(50% - 3px)
+        width: 10px
+        height: 6px
+        stroke-width: 2px
+        stroke: #9098A9
+        fill: none
+        stroke-linecap: round
+        stroke-linejoin: round
+        pointer-events: none
+
+    select
+        -webkit-appearance: none
+        padding: 7px 40px 7px 12px
+        width: 100%
+        border: 1px solid #E8EAED
+        border-radius: 5px
+        background: white
+        box-shadow: 0 1px 3px -2px #9098A9
+        cursor: pointer
+        font-family: inherit
+        font-size: 16px
+        transition: all 150ms ease
+        &:required:invalid
+            color: #5A667F
+
+        option
+            color: #223254
+            padding: 10px
+            height: 230px
+        &[value=""][disabled]
+            display: none
+
+            &:focus
+                outline: none
+                border-color: #0077FF
+                box-shadow: 0 0 0 2px rgba(#0077FF,.2)
+
+            &:hover + svg
+                stroke: #0077FF
+
+.sprites
+    position: absolute
+    width: 0
+    height: 0
+    pointer-events: none
+    user-select: none
+
+$color-1: #2ecc71
+$color-2: #3498db
+$color-3: #f1c40f
+$color-4: #e74c3c
+
+.custom_radios
+
+    div
+        display: inline-block
+
+    input[type="radio"]
+        display: none
+
+        + label
+            color: #333
+            font-family: Arial, sans-serif
+            font-size: 14px
+
+        span
+            display: inline-block
+            width: 40px
+            height: 40px
+            margin: -1px 4px 0 0
+            vertical-align: middle
+            cursor: pointer
+            border-radius: 50%
+            border: 2px solid #FFFFFF
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.33)
+            background-repeat: no-repeat
+            background-position: center
+            text-align: center
+            line-height: 44px
+
+            img
+                opacity: 0
+                transition: all .3s ease
+
+        &.color1 + label span
+            background-color: $color-1
+
+        &.color2 + label span
+            background-color: $color-2
+
+        &.color3 + label span
+            background-color: $color-3
+
+        &.color4 + label span
+            background-color: $color-4
+
+        &:checked + label span img
+            opacity: 1

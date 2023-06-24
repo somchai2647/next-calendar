@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.26.0",
     "axios": "^1.4.0",
     "dayjs": "^1.11.8",
     "moment": "^2.29.4",

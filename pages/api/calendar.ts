@@ -2,6 +2,13 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { calendarData } from "../../components/Calendar/interface";
 
+
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = 'https://yeymwzuxuvbxlkxokvaa.supabase.co'
+const supabaseKey = process.env.SUPABASE_KEY
+const supabase = createClient(supabaseUrl, supabaseKey)
+
 export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<calendarData[]>

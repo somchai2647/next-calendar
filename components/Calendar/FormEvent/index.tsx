@@ -4,6 +4,20 @@ import { useForm } from "react-hook-form";
 import { calendarData } from "../interface";
 import axios from "axios";
 
+import dynamic from 'next/dynamic'
+import {  EditorState,  } from "react-draft-wysiwyg";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+
+// const Editor = dynamic(
+//   () => import('react-draft-wysiwyg').then(mod => mod.Editor),
+//   { ssr: false }
+// )
+
+const Editor = dynamic(
+  () => import('../TextEditor').then(mod => mod.default),
+  { ssr: false }
+)
+
 type Props = {
   onClick: Function | any;
   currentDate:
@@ -25,6 +39,7 @@ interface formEvent extends calendarData {
 const bgColor = ["#3a86ff", "#ffbe0b", "#fb5607", "#ff006e", "#8338ec"];
 
 export default function FormEvent({ onClick, currentDate }: Props) {
+  const [editorState, setEditorState] = useState<EditorState>();
   const { register, handleSubmit, watch, setValue } = useForm();
 
   const watchAllDay = watch("allDay");
@@ -35,6 +50,10 @@ export default function FormEvent({ onClick, currentDate }: Props) {
     });
   }
 
+  function handleEditorChange(state: any) {
+    setEditorState(state);
+  }
+
   async function onSave(e: formEvent) {
     const { startDay, endDay, startTime, endTime, title, detail } = e;
 
@@ -42,14 +61,15 @@ export default function FormEvent({ onClick, currentDate }: Props) {
 
     const newObj: calendarData = {
       title,
-      detail,
+      //@ts-ignore
+      detail: editorState?.getCurrentContent().toObject(),
       startTimestamp: new Date(`${startDay} ${startTime}`).getTime(),
       endTimestamp: new Date(`${endDay} ${endTime}`).getTime(),
       allDay: watchAllDay,
       bgColor: "#000",
     };
 
-    // console.log("📦", newObj);
+    console.log("📦", newObj);
 
     // const res = await axios.post("/api/calendar", newObj);
     // const data = await res.data;
@@ -129,6 +149,10 @@ export default function FormEvent({ onClick, currentDate }: Props) {
           rows={5}
           {...register("detail")}
         ></textarea>
+        <Editor
+          // editorState={editorState}
+          // onEditorStateChange={handleEditorChange}
+        />
 
         <label htmlFor="bgColor">สี</label>
 

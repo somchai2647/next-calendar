@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import styles from "./FormEvent.module.sass";
 import { useForm } from "react-hook-form";
 import { calendarData } from "../interface";
+import Image from "next/image";
+import checkIcn from "./check-icn.svg";
 import axios from "axios";
 
 import dynamic from "next/dynamic";
@@ -159,7 +161,7 @@ export default function FormEvent({ onClick, currentDate }: Props) {
         )}
 
         <div className={styles.warpperColor}>
-        <label htmlFor="bgColor">สี</label>
+          <label htmlFor="bgColor">สี</label>
           <div className={styles.custom_radios}>
             <div>
               <input
@@ -170,10 +172,7 @@ export default function FormEvent({ onClick, currentDate }: Props) {
               />
               <label htmlFor="color1">
                 <span>
-                  <img
-                    src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg"
-                    alt="Checked Icon"
-                  />
+                  <Image src={checkIcn} alt="Checked Icon" quality={50} />
                 </span>
               </label>
             </div>
@@ -186,10 +185,7 @@ export default function FormEvent({ onClick, currentDate }: Props) {
               />
               <label htmlFor="color2">
                 <span>
-                  <img
-                    src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg"
-                    alt="Checked Icon"
-                  />
+                  <Image src={checkIcn} alt="Checked Icon" quality={50} />
                 </span>
               </label>
             </div>
@@ -202,10 +198,7 @@ export default function FormEvent({ onClick, currentDate }: Props) {
               />
               <label htmlFor="color3">
                 <span>
-                  <img
-                    src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg"
-                    alt="Checked Icon"
-                  />
+                  <Image src={checkIcn} alt="Checked Icon" quality={50} />
                 </span>
               </label>
             </div>
@@ -218,16 +211,12 @@ export default function FormEvent({ onClick, currentDate }: Props) {
               />
               <label htmlFor="color4">
                 <span>
-                  <img
-                    src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg"
-                    alt="Checked Icon"
-                  />
+                  <Image src={checkIcn} alt="Checked Icon" quality={50} />
                 </span>
               </label>
             </div>
           </div>
         </div>
-
         <input type="submit" defaultValue="Subscribe" />
       </form>
     </>

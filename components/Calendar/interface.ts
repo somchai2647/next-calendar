@@ -7,7 +7,7 @@ export interface CallBackDate {
 export interface calendarData {
   id?: string;
   title: string;
-  detail: string;
+  detail?: string;
   allDay: boolean;
   startTimestamp: number;
   endTimestamp: number;

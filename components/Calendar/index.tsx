@@ -10,9 +10,11 @@ type Props = {
 
 export default function Calendar({ skipMonth = 0, data = [] }: Props) {
   const [page, setPage] = useState(1);
+  const [currentDate, setCurrentDate] = useState({});
 
   function handleClicked(data: CallBackDate) {
     console.log(data);
+    setCurrentDate(data);
     setPage(2);
   }
 
@@ -20,6 +22,9 @@ export default function Calendar({ skipMonth = 0, data = [] }: Props) {
     console.log(data);
     switch (data.action) {
       case "back":
+        setPage(1);
+        break;
+      case "save":
         setPage(1);
         break;
 
@@ -38,7 +43,9 @@ export default function Calendar({ skipMonth = 0, data = [] }: Props) {
           onClick={handleClicked}
         />
       )}
-      {page === 2 && <FormEvent onClick={handleForm} />}
+      {page === 2 && (
+        <FormEvent onClick={handleForm} currentDate={currentDate} />
+      )}
     </React.Fragment>
   );
 }

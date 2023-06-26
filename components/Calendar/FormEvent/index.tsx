@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { calendarData } from "../interface";
 import Image from "next/image";
 import checkIcn from "./check-icn.svg";
+import axios from "axios";
 
 import dynamic from "next/dynamic";
 import { EditorState } from "react-draft-wysiwyg";
@@ -32,7 +33,7 @@ interface formEvent extends calendarData {
   endTime: string;
 }
 
-const bgColor = ["#ffbe0b", "#3a86ff", "#fb5607", "#ff006e", "#8338ec"];
+const bgColor = ["#3498db", "#2ecc71", "#f1c40f", "#e74c3c", "#8338ec"];
 
 const TEXT_EDITOR = false;
 
@@ -60,23 +61,26 @@ export default function FormEvent({ onClick, currentDate }: Props) {
     const newObj: calendarData = {
       title,
       //@ts-ignore
-      detail: !TEXT_EDITOR? detail : editorState?.getCurrentContent().toObject(),
+      detail: !TEXT_EDITOR
+        ? detail
+        : editorState?.getCurrentContent().toObject(),
       startTimestamp: new Date(`${startDay} ${startTime}`).getTime(),
       endTimestamp: new Date(`${endDay} ${endTime}`).getTime(),
       allDay: watchAllDay,
-      bgColor
+      bgColor,
     };
 
     console.log("📦", newObj);
 
-    // const res = await axios.post("/api/calendar", newObj);
-    // const data = await res.data;
+    const res = await axios.post("/api/calendar", newObj);
+    const data = await res.data;
 
-    // console.log("👍", data);
+    console.log("👍", data);
 
-    // onClick({
-    //   action: "save",
-    // });
+    onClick({
+      action: "save",
+      data: data.data,
+    });
   }
 
   useEffect(() => {
@@ -93,10 +97,9 @@ export default function FormEvent({ onClick, currentDate }: Props) {
         currentDate?.month > 10 ? currentDate?.month : "0" + currentDate?.month
       }-${currentDate?.day > 10 ? currentDate?.day : "0" + currentDate?.day}`
     );
-    setValue("bgColor", "#ffbe0b");
+    setValue("bgColor", "#3498db");
     setValue("startTime", "00:00");
     setValue("endTime", "00:00");
-
   }, []);
 
   return (
@@ -110,13 +113,18 @@ export default function FormEvent({ onClick, currentDate }: Props) {
           </label>
         </div>
         <label htmlFor="title">เพิ่มชื่อและเวลา</label>
-        <input type="text" id="title" {...register("title")} autoFocus />
+        <input
+          type="text"
+          id="title"
+          {...register("title", { required: true })}
+          autoFocus
+        />
         <label htmlFor="startDay">วันเริ่มต้น</label>
         <input
           type="date"
           name="startDay"
           id="startDay"
-          {...register("startDay")}
+          {...register("startDay", { required: true })}
         />
         {!watchAllDay && (
           <>
@@ -130,7 +138,12 @@ export default function FormEvent({ onClick, currentDate }: Props) {
           </>
         )}
         <label htmlFor="endDay">วันสื้นสุด</label>
-        <input type="date" name="endDay" id="endDay" {...register("endDay")} />
+        <input
+          type="date"
+          name="endDay"
+          id="endDay"
+          {...register("endDay", { required: true })}
+        />
         {!watchAllDay && (
           <>
             <label htmlFor="endTime">เวลาสิ้นสุด</label>
@@ -233,7 +246,9 @@ export default function FormEvent({ onClick, currentDate }: Props) {
             </div>
           </div>
         </div>
-       <button type="submit" className={styles.submit}>Submit</button>
+        <button type="submit" className={styles.submit}>
+          Submit
+        </button>
       </form>
     </>
   );

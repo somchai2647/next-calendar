@@ -33,7 +33,7 @@ export default function MainCalendar({
   const today = currentDate.getDate();
 
   // Get the current month
-  const currentMonth = 1 + currentDate.getMonth();
+  const currentMonth =  currentDate.getMonth();
 
   // Get the current year
   const currentYear = currentDate.getFullYear();

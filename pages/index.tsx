@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Calendar from "../components/Calendar";
 import { api } from "../libs";
-import useSWR from "swr";
+// import useSWR from "swr";
 import axios from "axios";
 
 type Props = {};
@@ -12,7 +12,7 @@ export default function index({}: Props) {
   const [skipMonth, setSkipMonth] = useState(0);
 
   //useSWR
-  const { data, error } = useSWR("/api/calendar", fetcher);
+  // const { data, error } = useSWR("/api/calendar", fetcher);
 
   async function getCalendar() {
     const res = await axios.get("/api/calendar");
@@ -38,7 +38,7 @@ export default function index({}: Props) {
       <button onClick={nowMonth}>now</button>
       <button onClick={nextMonth}>+</button>
       {skipMonth}
-      <div>{data && <Calendar skipMonth={skipMonth} data={data} />}</div>
+      <Calendar skipMonth={skipMonth} />
     </div>
   );
 }

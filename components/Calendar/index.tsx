@@ -2,15 +2,18 @@ import React, { useState } from "react";
 import MainCalendar from "./MainCalendar";
 import FormEvent from "./FormEvent";
 import { CallBackDate } from "./interface";
-
+import useSWR from "swr";
 type Props = {
   skipMonth?: number;
-  data?: any;
 };
 
-export default function Calendar({ skipMonth = 0, data = [] }: Props) {
+const fetcher = (url) => fetch(url).then((r) => r.json());
+
+export default function Calendar({ skipMonth = 0 }: Props) {
   const [page, setPage] = useState(1);
   const [currentDate, setCurrentDate] = useState({});
+
+  const { data: events, mutate , error } = useSWR("/api/calendar", fetcher);
 
   function handleClicked(data: CallBackDate) {
     console.log(data);
@@ -18,13 +21,14 @@ export default function Calendar({ skipMonth = 0, data = [] }: Props) {
     setPage(2);
   }
 
-  function handleForm(data: any) {
-    console.log(data);
-    switch (data.action) {
+  function handleForm(callback: any) {
+    console.log(callback);
+    switch (callback.action) {
       case "back":
         setPage(1);
         break;
       case "save":
+        mutate([...events, callback.data], false);
         setPage(1);
         break;
 
@@ -38,7 +42,7 @@ export default function Calendar({ skipMonth = 0, data = [] }: Props) {
       <h2>Calendar 2</h2>
       {page === 1 && (
         <MainCalendar
-          data={data}
+          data={events}
           skipMonth={skipMonth}
           onClick={handleClicked}
         />

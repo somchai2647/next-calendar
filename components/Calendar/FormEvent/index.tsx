@@ -4,16 +4,10 @@ import { useForm } from "react-hook-form";
 import { calendarData } from "../interface";
 import Image from "next/image";
 import checkIcn from "./check-icn.svg";
-import axios from "axios";
 
 import dynamic from "next/dynamic";
 import { EditorState } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-
-// const Editor = dynamic(
-//   () => import('react-draft-wysiwyg').then(mod => mod.Editor),
-//   { ssr: false }
-// )
 
 const Editor = dynamic(
   () => import("../TextEditor").then((mod) => mod.default),
@@ -38,7 +32,7 @@ interface formEvent extends calendarData {
   endTime: string;
 }
 
-const bgColor = ["#3a86ff", "#ffbe0b", "#fb5607", "#ff006e", "#8338ec"];
+const bgColor = ["#ffbe0b", "#3a86ff", "#fb5607", "#ff006e", "#8338ec"];
 
 const TEXT_EDITOR = false;
 
@@ -59,18 +53,18 @@ export default function FormEvent({ onClick, currentDate }: Props) {
   }
 
   async function onSave(e: formEvent) {
-    const { startDay, endDay, startTime, endTime, title, detail } = e;
+    const { startDay, endDay, startTime, endTime, title, detail, bgColor } = e;
 
-    console.log("📦", e);
+    console.log("=>", e);
 
     const newObj: calendarData = {
       title,
       //@ts-ignore
-      detail: editorState?.getCurrentContent().toObject(),
+      detail: !TEXT_EDITOR? detail : editorState?.getCurrentContent().toObject(),
       startTimestamp: new Date(`${startDay} ${startTime}`).getTime(),
       endTimestamp: new Date(`${endDay} ${endTime}`).getTime(),
       allDay: watchAllDay,
-      bgColor: "#000",
+      bgColor
     };
 
     console.log("📦", newObj);
@@ -99,6 +93,10 @@ export default function FormEvent({ onClick, currentDate }: Props) {
         currentDate?.month > 10 ? currentDate?.month : "0" + currentDate?.month
       }-${currentDate?.day > 10 ? currentDate?.day : "0" + currentDate?.day}`
     );
+    setValue("bgColor", "#ffbe0b");
+    setValue("startTime", "00:00");
+    setValue("endTime", "00:00");
+
   }, []);
 
   return (
@@ -167,8 +165,9 @@ export default function FormEvent({ onClick, currentDate }: Props) {
               <input
                 type="radio"
                 id="color1"
-                name="color"
+                {...register("bgColor")}
                 className={styles.color1}
+                value={bgColor[0]}
               />
               <label htmlFor="color1">
                 <span>
@@ -180,8 +179,9 @@ export default function FormEvent({ onClick, currentDate }: Props) {
               <input
                 type="radio"
                 id="color2"
-                name="color"
+                {...register("bgColor")}
                 className={styles.color2}
+                value={bgColor[1]}
               />
               <label htmlFor="color2">
                 <span>
@@ -193,8 +193,9 @@ export default function FormEvent({ onClick, currentDate }: Props) {
               <input
                 type="radio"
                 id="color3"
-                name="color"
+                {...register("bgColor")}
                 className={styles.color3}
+                value={bgColor[2]}
               />
               <label htmlFor="color3">
                 <span>
@@ -206,8 +207,9 @@ export default function FormEvent({ onClick, currentDate }: Props) {
               <input
                 type="radio"
                 id="color4"
-                name="color"
+                {...register("bgColor")}
                 className={styles.color4}
+                value={bgColor[3]}
               />
               <label htmlFor="color4">
                 <span>
@@ -215,9 +217,23 @@ export default function FormEvent({ onClick, currentDate }: Props) {
                 </span>
               </label>
             </div>
+            <div>
+              <input
+                type="radio"
+                id="color5"
+                {...register("bgColor")}
+                className={styles.color5}
+                value={bgColor[4]}
+              />
+              <label htmlFor="color5">
+                <span>
+                  <Image src={checkIcn} alt="Checked Icon" quality={50} />
+                </span>
+              </label>
+            </div>
           </div>
         </div>
-        <input type="submit" defaultValue="Subscribe" />
+       <button type="submit" className={styles.submit}>Submit</button>
       </form>
     </>
   );

@@ -32,6 +32,19 @@
         background: hsl(0 0% 93%)
         border: none
 
+.submit
+    border: none
+    border-radius: .25rem
+    padding: .75rem 1rem
+    color: white
+    background: #3498db
+    box-shadow: 0 .75rem .5rem -.5rem hsl(0 50% 80%)
+    cursor: pointer
+    transition: all .2s ease-in-out
+    &:active
+        transform: scale(.95)
+        background: #3498dbd1
+
 // Variables
 $checkbox-size: 20px
 $checkbox-border: #cecece
@@ -137,14 +150,12 @@ $width-height: 1rem
     gap: 1rem
     padding: 1rem
 
-
 // Colors
-$color-1: #2ecc71
-$color-2: #3498db
+$color-1: #3498db
+$color-2: #2ecc71
 $color-3: #f1c40f
 $color-4: #e74c3c
 $color-5: #8338ec
-
 
 .custom_radios
 

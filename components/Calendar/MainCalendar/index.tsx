@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styles from "./MainCalendar.module.sass";
 import { CallBackDate, calendarData } from "../interface";
 import dayjs from "dayjs";
+import Popper from "../Popper";
 
 type Props = {
   skipMonth?: number;
@@ -175,12 +176,32 @@ export function Events({
     );
 
   return events.map((event: calendarData) => (
-    <div
-      key={event.id}
-      className={styles.event}
-      style={{ backgroundColor: event.bgColor }}
-    >
-      {event.title}
-    </div>
+    <EventItem event={event} key={event.id} />
   ));
+}
+
+export function EventItem({ event }: { event: calendarData }) {
+  const [visible, setVisible] = useState(false);
+
+  function handleHover() {
+    setVisible(true);
+  }
+
+  function handleMouseLeave() {
+    setVisible(false);
+  }
+
+  return (
+    <>
+      <div
+        className={styles.event}
+        style={{ backgroundColor: event.bgColor }}
+        onMouseEnter={handleHover}
+        onMouseLeave={handleMouseLeave}
+      >
+        <Popper visible={visible} event={event} />
+        {event.title}
+      </div>
+    </>
+  );
 }

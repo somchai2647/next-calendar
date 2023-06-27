@@ -8,7 +8,7 @@ export default function index({}: Props) {
 
   return (
     <div>
-      <Calendar  />
+      <Calendar urlFetch="/api/calendar" />
     </div>
   );
 }

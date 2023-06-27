@@ -4,16 +4,20 @@ import FormEvent from "./FormEvent";
 import { CallBackDate } from "./interface";
 import useSWR from "swr";
 type Props = {
-  skipMonth?: number;
+  urlFetch?: string;
 };
 
 const fetcher = (url) => fetch(url).then((r) => r.json());
 
-export default function Calendar({ skipMonth = 0 }: Props) {
+export default function Calendar({ urlFetch }: Props) {
   const [page, setPage] = useState(1);
   const [currentDate, setCurrentDate] = useState({});
 
-  const { data: events, mutate , error } = useSWR("/api/calendar", fetcher);
+  const {
+    data: events,
+    mutate,
+    error,
+  } = useSWR(urlFetch ? urlFetch : `/api/calendar`, fetcher);
 
   function handleClicked(data: CallBackDate) {
     console.log(data);
@@ -40,13 +44,7 @@ export default function Calendar({ skipMonth = 0 }: Props) {
   return (
     <React.Fragment>
       <h2>Calendar 2</h2>
-      {page === 1 && (
-        <MainCalendar
-          data={events}
-          skipMonth={skipMonth}
-          onClick={handleClicked}
-        />
-      )}
+      {page === 1 && <MainCalendar data={events} onClick={handleClicked} />}
       {page === 2 && (
         <FormEvent onClick={handleForm} currentDate={currentDate} />
       )}

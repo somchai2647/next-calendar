@@ -9,11 +9,9 @@ type Props = {
   data?: any;
 };
 
-export default function MainCalendar({
-  skipMonth = 0,
-  onClick,
-  data = [],
-}: Props) {
+export default function MainCalendar({ onClick, data = [] }: Props) {
+  const [skipMonth, setSkipMonth] = useState(0);
+
   // Create an array of weekdays
   const weekdays = {
     en: [
@@ -33,7 +31,7 @@ export default function MainCalendar({
   const today = currentDate.getDate();
 
   // Get the current month
-  const currentMonth =  currentDate.getMonth();
+  const currentMonth = currentDate.getMonth() + skipMonth;
 
   // Get the current year
   const currentYear = currentDate.getFullYear();
@@ -56,56 +54,73 @@ export default function MainCalendar({
     onClick(obj);
   }
 
-  return (
-    <div className={styles.calendar_wrapper}>
-      <ol className={styles.calendar}>
-        {weekdays["th"].map((weekday, index) => (
-          <li key={index} className={styles.dayName}>
-            {weekday}
-          </li>
-        ))}
-        {Array.from({ length: firstDayOfMonth }).map((_, index) => (
-          <div key={"emptyDay" + index} />
-        ))}
-        {daysArray.map((day, index) => {
-          return (
-            //@ts-ignore
-            <li
-              className={styles.item}
-              key={`dayitem-${day + 1}`}
-              onClick={() => handleClick(day + 1)}
-            >
-              <span
-                className={`${styles.numberDay} ${
-                  day + 1 === today ? styles.toDay : styles.numberDay
-                }`}
-              >
-                {day + 1}
-              </span>
+  function nextMonth() {
+    setSkipMonth(skipMonth + 1);
+  }
 
-              <div className={styles.events}>
-                {/* {checkBetweenDate(dateToTimestamp(
+  function prevMonth() {
+    setSkipMonth(skipMonth - 1);
+  }
+
+  function nowMonth() {
+    setSkipMonth(0);
+  }
+
+  return (
+    <>
+      <button onClick={prevMonth}>-</button>
+      <button onClick={nowMonth}>now</button>
+      <button onClick={nextMonth}>+</button>
+      <div className={styles.calendar_wrapper}>
+        <ol className={styles.calendar}>
+          {weekdays["th"].map((weekday, index) => (
+            <li key={index} className={styles.dayName}>
+              {weekday}
+            </li>
+          ))}
+          {Array.from({ length: firstDayOfMonth }).map((_, index) => (
+            <div key={"emptyDay" + index} />
+          ))}
+          {daysArray.map((day, index) => {
+            return (
+              //@ts-ignore
+              <li
+                className={styles.item}
+                key={`dayitem-${day + 1}`}
+                onClick={() => handleClick(day + 1)}
+              >
+                <span
+                  className={`${styles.numberDay} ${
+                    day + 1 === today ? styles.toDay : styles.numberDay
+                  }`}
+                >
+                  {day + 1}
+                </span>
+
+                <div className={styles.events}>
+                  {/* {checkBetweenDate(dateToTimestamp(
                   day + 1,
                   currentMonth,
                   currentYear
                 )) && <>true</>} */}
-                <Events
-                  data={data}
-                  day={day + 1}
-                  month={currentMonth}
-                  year={currentYear}
-                />
-                {/* {getStartOfDay(currentDate)} | {getEndOfDay(currentDate)} | */}
-                {/* {dateToTimestamp(day + 1, currentMonth, currentYear)} */}
-                {/* {dayjs().get("date")} | */}
-                {/* {day + 1} | {currentMonth} | {currentYear} | */}
-                {/* {dateToTimestamp(day + 1, currentMonth, currentYear)} */}
-              </div>
-            </li>
-          );
-        })}
-      </ol>
-    </div>
+                  <Events
+                    data={data}
+                    day={day + 1}
+                    month={currentMonth}
+                    year={currentYear}
+                  />
+                  {/* {getStartOfDay(currentDate)} | {getEndOfDay(currentDate)} | */}
+                  {/* {dateToTimestamp(day + 1, currentMonth, currentYear)} */}
+                  {/* {dayjs().get("date")} | */}
+                  {/* {day + 1} | {currentMonth} | {currentYear} | */}
+                  {/* {dateToTimestamp(day + 1, currentMonth, currentYear)} */}
+                </div>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+    </>
   );
 }
 

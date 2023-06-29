@@ -88,23 +88,24 @@ export default function FormEvent({ onClick, currentDate }: Props) {
     setValue(
       "startDay",
       `${currentDate?.year}-${
-        currentDate?.month > 10 ? currentDate?.month : "0" + currentDate?.month
+        currentDate?.month > 10 ? (currentDate?.month + 1): "0" + (currentDate?.month + 1)
       }-${currentDate?.day > 10 ? currentDate?.day : "0" + currentDate?.day}`
     );
     setValue(
       "endDay",
       `${currentDate?.year}-${
-        currentDate?.month > 10 ? currentDate?.month : "0" + currentDate?.month
+        currentDate?.month > 10 ? (currentDate?.month + 1) : "0" + (currentDate?.month + 1)
       }-${currentDate?.day > 10 ? currentDate?.day : "0" + currentDate?.day}`
     );
     setValue("bgColor", "#3498db");
-    setValue("startTime", "00:00");
-    setValue("endTime", "00:00");
+    setValue("startTime", "00:00:00");
+    setValue("endTime", "23:59:00");
   }, []);
 
   return (
     <>
       <button onClick={handleClick}>Back</button>
+      {new Date(currentDate?.year, currentDate?.month, currentDate?.day).getTime()}
       <form className={styles.form} onSubmit={handleSubmit(onSave)}>
         <div className={styles.checkbox_group}>
           <label>

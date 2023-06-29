@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import MainCalendar from "./MainCalendar";
 import FormEvent from "./FormEvent";
+import Timeline from "./Timeline";
 import { CallBackDate } from "./interface";
 import useSWR from "swr";
 type Props = {
@@ -25,11 +26,20 @@ export default function Calendar({ urlFetch }: Props) {
     setPage(2);
   }
 
-  function handleForm(callback: any) {
+  function handleActions(callback: any) {
     console.log(callback);
     switch (callback.action) {
       case "back":
         setPage(1);
+        break;
+      case "event":
+        setPage(2);
+        setCurrentDate(callback.data);
+        break;
+      case "add":
+        setPage(3);
+        console.log("📦", callback.data);
+        setCurrentDate(callback.data);
         break;
       case "save":
         mutate([...events, callback.data], false);
@@ -44,9 +54,10 @@ export default function Calendar({ urlFetch }: Props) {
   return (
     <React.Fragment>
       <h2>Calendar 2</h2>
-      {page === 1 && <MainCalendar data={events} onClick={handleClicked} />}
-      {page === 2 && (
-        <FormEvent onClick={handleForm} currentDate={currentDate} />
+      {page === 1 && <MainCalendar data={events} onClick={handleActions} />}
+      {page === 2 && <Timeline onClick={handleActions} data={events} currentDate={currentDate} />}
+      {page === 3 && (
+        <FormEvent onClick={handleActions} currentDate={currentDate} />
       )}
     </React.Fragment>
   );

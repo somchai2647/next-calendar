@@ -52,7 +52,10 @@ export default function MainCalendar({ onClick, data = [] }: Props) {
       month: currentMonth,
       year: currentYear,
     };
-    onClick(obj);
+    onClick({
+      action: "event",
+      data: obj,
+    });
   }
 
   function nextMonth() {
@@ -110,6 +113,7 @@ export default function MainCalendar({ onClick, data = [] }: Props) {
                     month={currentMonth}
                     year={currentYear}
                   />
+                  {/* {new Date(currentYear, currentMonth, day + 1).getTime()} */}
                   {/* {getStartOfDay(currentDate)} | {getEndOfDay(currentDate)} | */}
                   {/* {dateToTimestamp(day + 1, currentMonth, currentYear)} */}
                   {/* {dayjs().get("date")} | */}
@@ -137,9 +141,13 @@ export function Events({
   year: number;
 }) {
   const startDateDay =
-    dayjs(`${year}-${month}-${day}`).startOf("day").unix() * 1000;
+    dayjs(`${year}-${month + 1}-${day}`)
+      .startOf("day")
+      .unix() * 1000;
   const endDateDay =
-    dayjs(`${year}-${month}-${day}`).endOf("day").unix() * 1000;
+    dayjs(`${year}-${month + 1}-${day}`)
+      .endOf("day")
+      .unix() * 1000;
 
   const events = data.filter((event: calendarData) => {
     //check between date
@@ -162,6 +170,8 @@ export function Events({
       return event;
     }
   });
+
+  console.log(events.length);
 
   // return endDate
 

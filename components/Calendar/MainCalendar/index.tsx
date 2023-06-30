@@ -4,6 +4,21 @@ import { CallBackDate, calendarData } from "../interface";
 import dayjs from "dayjs";
 import Popper from "../Popper";
 
+export const thaiMonthNames = [
+  "มกราคม",
+  "กุมภาพันธ์",
+  "มีนาคม",
+  "เมษายน",
+  "พฤษภาคม",
+  "มิถุนายน",
+  "กรกฎาคม",
+  "สิงหาคม",
+  "กันยายน",
+  "ตุลาคม",
+  "พฤศจิกายน",
+  "ธันวาคม",
+];
+
 type Props = {
   skipMonth?: number;
   onClick?: Function | any | CallBackDate;
@@ -46,6 +61,12 @@ export default function MainCalendar({ onClick, data = [] }: Props) {
   // Generate an array of days in the month
   const daysArray = Array.from({ length: daysInMonth }, (_, index) => index);
 
+  const day = currentDate.toLocaleDateString("en", { day: "2-digit" });
+  const month = currentDate.toLocaleDateString("en", { month: "2-digit" });
+  const year = currentDate.getFullYear();
+
+  const formattedDate = `${day}-${month}-${year}`;
+
   function handleClick(day: number) {
     const obj: CallBackDate = {
       day: day,
@@ -72,9 +93,12 @@ export default function MainCalendar({ onClick, data = [] }: Props) {
 
   return (
     <>
-      <button onClick={prevMonth}>-</button>
-      <button onClick={nowMonth}>now</button>
-      <button onClick={nextMonth}>+</button>
+      <div>
+        <button onClick={prevMonth}>{"<"}</button>
+        <button onClick={nowMonth}>now</button>
+        <button onClick={nextMonth}>{">"}</button>
+        {formattedDate}
+      </div>
       <div className={styles.calendar_wrapper}>
         <ol className={styles.calendar}>
           {weekdays["th"].map((weekday, index) => (
@@ -86,6 +110,17 @@ export default function MainCalendar({ onClick, data = [] }: Props) {
             <div key={"emptyDay" + index} />
           ))}
           {daysArray.map((day, index) => {
+            const thisDate = new Date(currentYear, currentMonth, day + 1);
+            const thisDay = thisDate.toLocaleDateString("en", {
+              day: "2-digit",
+            });
+            const thisMonth = thisDate.toLocaleDateString("en", {
+              month: "2-digit",
+            });
+            const thisYear = thisDate.getFullYear();
+
+            const thisFormattedDate = `${thisDay}-${thisMonth}-${thisYear}`;
+
             return (
               //@ts-ignore
               <li
@@ -95,24 +130,21 @@ export default function MainCalendar({ onClick, data = [] }: Props) {
               >
                 <span
                   className={`${styles.numberDay} ${
-                    day + 1 === today ? styles.toDay : styles.numberDay
+                    formattedDate === thisFormattedDate ? styles.toDay : styles.numberDay
                   }`}
                 >
                   {day + 1}
                 </span>
 
                 <div className={styles.events}>
-                  {/* {checkBetweenDate(dateToTimestamp(
-                  day + 1,
-                  currentMonth,
-                  currentYear
-                )) && <>true</>} */}
                   <Events
                     data={data}
                     day={day + 1}
                     month={currentMonth}
                     year={currentYear}
                   />
+                  {/* 📌Debug📌 */}
+                  {/* {formattedDate} */}
                   {/* {new Date(currentYear, currentMonth, day + 1).getTime()} */}
                   {/* {getStartOfDay(currentDate)} | {getEndOfDay(currentDate)} | */}
                   {/* {dateToTimestamp(day + 1, currentMonth, currentYear)} */}
@@ -170,11 +202,7 @@ export function Events({
       return event;
     }
   });
-
-  console.log(events.length);
-
-  // return endDate
-
+  
   if (events.length > 3)
     return (
       <div

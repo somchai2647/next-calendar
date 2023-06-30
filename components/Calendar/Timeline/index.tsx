@@ -3,16 +3,30 @@ import { calendarData } from "../interface";
 import styles from "./Timeline.module.sass";
 import dayjs from "dayjs";
 
+export const thaiMonthNames = [
+  "มกราคม",
+  "กุมภาพันธ์",
+  "มีนาคม",
+  "เมษายน",
+  "พฤษภาคม",
+  "มิถุนายน",
+  "กรกฎาคม",
+  "สิงหาคม",
+  "กันยายน",
+  "ตุลาคม",
+  "พฤศจิกายน",
+  "ธันวาคม"
+];
+
+
 type Props = {
   data?: calendarData[];
   onClick?: Function;
-  currentDate:
-    | {
-        day: number;
-        month: number;
-        year: number;
-      }
-    | any;
+  currentDate: {
+    day: number;
+    month: number;
+    year: number;
+  };
 };
 
 function RenderDivs() {
@@ -100,7 +114,7 @@ export default function Timeline({ onClick, data, currentDate }: Props) {
       {/* {JSON.stringify(Events)} */}
       <div className={styles.calendar_wrapper}>
         <div className={styles.header}>
-          <div className={styles.titleDate}>วัน</div>
+          <div className={styles.titleDate}>วันที่ {currentDate.day} {thaiMonthNames[currentDate.month]} {currentDate.year} </div>
         </div>
         <div className={styles.headerHours}>
           <div className={styles.dayName} style={{ width: "5rem" }}>
@@ -142,7 +156,7 @@ function EventItem({ event }: { event: calendarData }) {
         // style={{ backgroundColor: event.bgColor }}
       >
         <div className={styles.title} style={{ width: "5rem" }}>
-        {maxCharacter(event.title,50)}
+          {maxCharacter(event.title, 50)}
         </div>
         {/* <RenderDivs /> */}
         {EmtyArray.map((item) => (
@@ -158,7 +172,7 @@ function EventItem({ event }: { event: calendarData }) {
                 `${(Number(endDate) - Number(startDate) + 2) * 48 + 25}px`,
             }}
           >
-            <p>{maxCharacter(event.title,100)}</p>
+            <p>{maxCharacter(event.title, 100)}</p>
           </div>
           {/* {JSON.stringify(event)} */}
           {/* {Number(startDate)} {Number(endDate)} */}

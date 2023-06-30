@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./MainCalendar.module.sass";
 import { CallBackDate, calendarData } from "../interface";
 import dayjs from "dayjs";
 import Popper from "../Popper";
+import { off } from "process";
 
 export const thaiMonthNames = [
   "มกราคม",
@@ -27,6 +28,9 @@ type Props = {
 
 export default function MainCalendar({ onClick, data = [] }: Props) {
   const [skipMonth, setSkipMonth] = useState(0);
+
+  const [offsetYear, setOffsetYear] = useState(0);
+  const [currentNumberMonth, setcurrentNumberMonth] = useState(0); //เดือนที่ถูกเลือกดู
 
   // Create an array of weekdays
   const weekdays = {
@@ -81,6 +85,12 @@ export default function MainCalendar({ onClick, data = [] }: Props) {
 
   function nextMonth() {
     setSkipMonth(skipMonth + 1);
+    setcurrentNumberMonth(currentNumberMonth + 1);
+
+    if (currentNumberMonth === 11) {
+      setOffsetYear(offsetYear + 1);
+      setcurrentNumberMonth(0);
+    }
   }
 
   function prevMonth() {
@@ -91,14 +101,21 @@ export default function MainCalendar({ onClick, data = [] }: Props) {
     setSkipMonth(0);
   }
 
+  useEffect(() => {
+    setcurrentNumberMonth(currentMonth);
+  }, [])
+  
+
   return (
     <>
       <div>
         <button onClick={prevMonth}>{"<"}</button>
         <button onClick={nowMonth}>now</button>
         <button onClick={nextMonth}>{">"}</button>
-        {formattedDate}
       </div>
+      <h1>
+        {thaiMonthNames[currentNumberMonth]} {currentYear + offsetYear}
+      </h1>
       <div className={styles.calendar_wrapper}>
         <ol className={styles.calendar}>
           {weekdays["th"].map((weekday, index) => (
@@ -130,7 +147,9 @@ export default function MainCalendar({ onClick, data = [] }: Props) {
               >
                 <span
                   className={`${styles.numberDay} ${
-                    formattedDate === thisFormattedDate ? styles.toDay : styles.numberDay
+                    formattedDate === thisFormattedDate
+                      ? styles.toDay
+                      : styles.numberDay
                   }`}
                 >
                   {day + 1}
@@ -202,7 +221,7 @@ export function Events({
       return event;
     }
   });
-  
+
   if (events.length > 3)
     return (
       <div
@@ -242,4 +261,12 @@ export function EventItem({ event }: { event: calendarData }) {
       </div>
     </>
   );
+}
+function getMonthNumberFromDate(date, monthOffset) {
+  const targetDate = new Date(date);
+  targetDate.setMonth(targetDate.getMonth() + monthOffset);
+
+  const monthNumber = targetDate.getMonth() + 1; // เพิ่ม 1 เนื่องจาก getMonth() คืนค่าเดือนเริ่มต้นที่เป็น 0
+
+  return monthNumber;
 }

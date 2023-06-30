@@ -1,3 +1,17 @@
+.nonResponsive
+    max-width: none !important
+    flex-basis: auto !important
+    &::before, &::after
+        max-width: none !important
+        flex-basis: auto !important
+
+@media (max-width: 10000px)
+    .nonResponsive
+        overflow: auto !important
+        &::before, &::after
+            max-width: none !important
+            flex-basis: auto !important
+
 .calendar-wrapper
     max-width: 280px
     font: 100% system-ui
@@ -83,6 +97,7 @@
         font-weight: bold
         border-radius: 12px
         cursor: pointer
+        min-width: 48px
 
     .eventTagAllDay
         @include eventTag
@@ -90,4 +105,3 @@
 
     .eventTag
         @include eventTag
-        width: 92%

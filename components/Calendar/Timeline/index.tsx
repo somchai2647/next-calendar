@@ -124,25 +124,45 @@ function EventItem({ event }: { event: calendarData }) {
   const startDate = dayjs(event.startTimestamp).format("HH");
   const endDate = dayjs(event.endTimestamp).format("HH");
   const allDay = event.allDay;
-  return (
-    <div
-      className={styles.event}
-      // style={{ backgroundColor: event.bgColor }}
-    >
-      <div className={styles.title} style={{ width: "5rem" }}>
-        {event.title}
-      </div>
-      {/* <RenderDivs /> */}
-      <div>
-        <div
-          className={allDay ? styles.eventTagAllDay : styles.eventTag}
-          style={{ backgroundColor: event.bgColor }}
-        >
-          <p>{event.title}</p>
-        </div>
 
-        {/* {JSON.stringify(event)} */}
-        {/* {startDate} - {endDate} */}
+  const startSpace = Number(startDate);
+
+  let EmtyArray = [];
+
+  if (!allDay) {
+    for (let index = 0; index < startSpace; index++) {
+      EmtyArray.push(`space${index}`);
+    }
+  }
+
+  return (
+    <div className={styles.nonResponsive}>
+      <div
+        className={styles.event}
+        // style={{ backgroundColor: event.bgColor }}
+      >
+        <div className={styles.title} style={{ width: "5rem" }}>
+          {event.title}
+        </div>
+        {/* <RenderDivs /> */}
+        {EmtyArray.map((item) => (
+          <div key={item}></div>
+        ))}
+        <div>
+          <div
+            className={allDay ? styles.eventTagAllDay : styles.eventTag}
+            style={{
+              backgroundColor: event.bgColor,
+              width:
+                !allDay &&
+                `${(Number(endDate) - Number(startDate) + 2) * 48 + 25}px`,
+            }}
+          >
+            <p>{event.title}</p>
+          </div>
+          {/* {JSON.stringify(event)} */}
+          {/* {Number(startDate)} {Number(endDate)} */}
+        </div>
       </div>
     </div>
   );

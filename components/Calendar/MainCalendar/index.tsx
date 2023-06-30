@@ -3,7 +3,6 @@ import styles from "./MainCalendar.module.sass";
 import { CallBackDate, calendarData } from "../interface";
 import dayjs from "dayjs";
 import Popper from "../Popper";
-import { off } from "process";
 
 export const thaiMonthNames = [
   "มกราคม",
@@ -108,10 +107,10 @@ export default function MainCalendar({ onClick, data = [] }: Props) {
 
   return (
     <>
-      <div>
-        <button onClick={prevMonth}>{"<"}</button>
-        <button onClick={nowMonth}>now</button>
-        <button onClick={nextMonth}>{">"}</button>
+      <div className={styles.calendar_button}>
+        <button onClick={prevMonth} className={styles.previous}>{"<"}</button>
+        <button onClick={nowMonth} className={styles.now}>now</button>
+        <button onClick={nextMonth} className={styles.next}>{">"}</button>
       </div>
       <h1>
         {thaiMonthNames[currentNumberMonth]} {currentYear + offsetYear}

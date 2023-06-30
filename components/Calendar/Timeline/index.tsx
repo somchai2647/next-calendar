@@ -104,7 +104,6 @@ export default function Timeline({ onClick, data, currentDate }: Props) {
 
   return (
     <>
-      <div>Timeline</div>
       <button type="button" onClick={handleBack}>
         Back
       </button>

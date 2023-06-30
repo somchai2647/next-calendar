@@ -56,3 +56,28 @@
 
             &:last-child
                 margin-bottom: 0
+
+$button-color: #333
+$button-background: #fff
+$button-padding: 8px 16px
+$button-border-radius: 4px
+
+.calendar_button
+    display: inline-block
+    border: none
+    background-color: $button-background
+    color: $button-color
+    padding: $button-padding
+    border-radius: $button-border-radius
+    cursor: pointer
+    text-decoration: none
+    transition: background-color 0.3s ease
+
+    &:hover
+        background-color: darken($button-background, 10%)
+
+    .previous
+        margin-right: 10px
+
+    .next
+        margin-left: 10px

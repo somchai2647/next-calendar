@@ -8,11 +8,17 @@ type Props = {
   urlFetch?: string;
 };
 
+type currentDate = {
+  day: number;
+  month: number;
+  year: number;
+}
+
 const fetcher = (url) => fetch(url).then((r) => r.json());
 
 export default function Calendar({ urlFetch }: Props) {
   const [page, setPage] = useState(1);
-  const [currentDate, setCurrentDate] = useState({});
+  const [currentDate, setCurrentDate] = useState<currentDate>();
 
   const {
     data: events,
@@ -53,7 +59,6 @@ export default function Calendar({ urlFetch }: Props) {
 
   return (
     <React.Fragment>
-      <h2>Calendar 2</h2>
       {page === 1 && <MainCalendar data={events} onClick={handleActions} />}
       {page === 2 && <Timeline onClick={handleActions} data={events} currentDate={currentDate} />}
       {page === 3 && (

@@ -97,7 +97,7 @@ export default function Timeline({ onClick, data, currentDate }: Props) {
       <button type="button" onClick={handleAddEvent}>
         Add Event
       </button>
-      {JSON.stringify(Events)}
+      {/* {JSON.stringify(Events)} */}
       <div className={styles.calendar_wrapper}>
         <div className={styles.header}>
           <div className={styles.titleDate}>วัน</div>
@@ -142,7 +142,7 @@ function EventItem({ event }: { event: calendarData }) {
         // style={{ backgroundColor: event.bgColor }}
       >
         <div className={styles.title} style={{ width: "5rem" }}>
-          {event.title}
+        {maxCharacter(event.title,50)}
         </div>
         {/* <RenderDivs /> */}
         {EmtyArray.map((item) => (
@@ -158,7 +158,7 @@ function EventItem({ event }: { event: calendarData }) {
                 `${(Number(endDate) - Number(startDate) + 2) * 48 + 25}px`,
             }}
           >
-            <p>{event.title}</p>
+            <p>{maxCharacter(event.title,100)}</p>
           </div>
           {/* {JSON.stringify(event)} */}
           {/* {Number(startDate)} {Number(endDate)} */}
@@ -166,4 +166,13 @@ function EventItem({ event }: { event: calendarData }) {
       </div>
     </div>
   );
+}
+
+//function max character then word add ...
+export function maxCharacter(text: string, max: number) {
+  if (text.length > max) {
+    return `${text.substring(0, max)}...`;
+  } else {
+    return text;
+  }
 }

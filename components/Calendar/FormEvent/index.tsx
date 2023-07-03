@@ -56,7 +56,7 @@ export default function FormEvent({ onClick, currentDate }: Props) {
   async function onSave(e: formEvent) {
     const { startDay, endDay, startTime, endTime, title, detail, bgColor } = e;
 
-    console.log("=>", e);
+    // console.log("=>", e);
 
     const newObj: calendarData = {
       title,
@@ -70,12 +70,12 @@ export default function FormEvent({ onClick, currentDate }: Props) {
       bgColor,
     };
 
-    console.log("📦", newObj);
+    // console.log("📦", newObj);
 
     const res = await axios.post("/api/calendar", newObj);
     const data = await res.data;
 
-    console.log("👍", data);
+    // console.log("👍", data);
 
     onClick({
       action: "save",
@@ -88,13 +88,17 @@ export default function FormEvent({ onClick, currentDate }: Props) {
     setValue(
       "startDay",
       `${currentDate?.year}-${
-        currentDate?.month > 10 ? (currentDate?.month + 1): "0" + (currentDate?.month + 1)
+        currentDate?.month > 10
+          ? currentDate?.month + 1
+          : "0" + (currentDate?.month + 1)
       }-${currentDate?.day > 10 ? currentDate?.day : "0" + currentDate?.day}`
     );
     setValue(
       "endDay",
       `${currentDate?.year}-${
-        currentDate?.month > 10 ? (currentDate?.month + 1) : "0" + (currentDate?.month + 1)
+        currentDate?.month > 10
+          ? currentDate?.month + 1
+          : "0" + (currentDate?.month + 1)
       }-${currentDate?.day > 10 ? currentDate?.day : "0" + currentDate?.day}`
     );
     setValue("bgColor", "#3498db");
@@ -104,8 +108,10 @@ export default function FormEvent({ onClick, currentDate }: Props) {
 
   return (
     <>
-      <button onClick={handleClick}>Back</button>
-      {new Date(currentDate?.year, currentDate?.month, currentDate?.day).getTime()}
+      <div className={styles.buttonWarper}>
+        <button onClick={handleClick}>Back</button>
+      </div>
+      {/* {new Date(currentDate?.year, currentDate?.month, currentDate?.day).getTime()} */}
       <form className={styles.form} onSubmit={handleSubmit(onSave)}>
         <div className={styles.checkbox_group}>
           <label>

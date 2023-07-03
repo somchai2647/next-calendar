@@ -15,9 +15,8 @@ export const thaiMonthNames = [
   "กันยายน",
   "ตุลาคม",
   "พฤศจิกายน",
-  "ธันวาคม"
+  "ธันวาคม",
 ];
-
 
 type Props = {
   data?: calendarData[];
@@ -104,16 +103,21 @@ export default function Timeline({ onClick, data, currentDate }: Props) {
 
   return (
     <>
-      <button type="button" onClick={handleBack}>
-        Back
-      </button>
-      <button type="button" onClick={handleAddEvent}>
-        Add Event
-      </button>
+      <div className={styles.buttonWarper}>
+        <button type="button" onClick={handleBack}>
+          Back
+        </button>
+        <button type="button" onClick={handleAddEvent}>
+          Add Event
+        </button>
+      </div>
       {/* {JSON.stringify(Events)} */}
       <div className={styles.calendar_wrapper}>
         <div className={styles.header}>
-          <div className={styles.titleDate}>วันที่ {currentDate.day} {thaiMonthNames[currentDate.month]} {currentDate.year} </div>
+          <div className={styles.titleDate}>
+            วันที่ {currentDate.day} {thaiMonthNames[currentDate.month]}{" "}
+            {currentDate.year}{" "}
+          </div>
         </div>
         <div className={styles.headerHours}>
           <div className={styles.dayName} style={{ width: "5rem" }}>

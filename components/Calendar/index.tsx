@@ -91,6 +91,21 @@ export default function Calendar({ urlFetch }: Props) {
         setEditMode(true);
         break;
 
+      case "delete":
+        const indexDelete = events.findIndex(
+          (item: calendarData) => item.id === callback.payload.id
+        );
+
+        let newEventsDelete = [...events];
+
+        newEventsDelete.splice(indexDelete, 1);
+
+        mutate(newEventsDelete);
+
+        setPage(1);
+
+        break;
+
       default:
         break;
     }

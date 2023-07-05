@@ -99,6 +99,22 @@ export default function FormEvent({ onClick, currentDate, editMode }: Props) {
     // console.log("👍", data);
   }
 
+  async function onDelete() {
+    try {
+      
+      const res = await axios.delete(`/api/calendar/${currentDate.id}`);
+      const data = await res.data;
+
+      onClick({
+        action: "delete",
+        data: currentDate,
+        payload: data.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
     if (editMode) {
       const editDateStart = new Date(currentDate?.startTimestamp);
@@ -331,6 +347,12 @@ export default function FormEvent({ onClick, currentDate, editMode }: Props) {
         <button type="submit" className={styles.submit}>
           Submit
         </button>
+
+        {editMode && (
+          <button type="button" className={styles.delete} onClick={onDelete}>
+            Delete
+          </button>
+        )}
       </form>
     </>
   );

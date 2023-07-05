@@ -20,12 +20,6 @@ export default async function handler(
     case "POST":
       await createEvent(req, res);
       break;
-    case "PUT":
-      await updateEvent(req, res);
-      break;
-    case "DELETE":
-      // await deleteEvent(req, res);
-      break;
     default:
       res.status(405).end(); //Method Not Allowed
       break;
@@ -54,32 +48,6 @@ async function createEvent(req: NextApiRequest, res: NextApiResponse) {
   res.status(200).json({
     resCode: "200",
     data: event,
-  });
-}
-
-async function updateEvent(req: NextApiRequest, res: NextApiResponse) {
-  const { title, detail, allDay, startTimestamp, endTimestamp, bgColor } =
-    req.body;
-
-  const id = req.query.id;
-
-  // let { data: event, error } = await supabase
-  //   .from("events")
-  //   .update({
-  //     title,
-  //     detail,
-  //     allDay,
-  //     startTimestamp,
-  //     endTimestamp,
-  //     bgColor,
-  //   })
-  //   .eq("id", id)
-  //   .select("*")
-  //   .single();
-
-  res.status(200).json({
-    resCode: "200",
-    data: id,
   });
 }
 

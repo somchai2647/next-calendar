@@ -15,16 +15,13 @@ export default async function handler(
   //switch case for different methods
   switch (req.method) {
     case "GET":
-      await getEvents(req, res);
-      break;
-    case "POST":
-      await createEvent(req, res);
+      await getEvent(req, res);
       break;
     case "PUT":
       await updateEvent(req, res);
       break;
     case "DELETE":
-      // await deleteEvent(req, res);
+      await deleteEvent(req, res);
       break;
     default:
       res.status(405).end(); //Method Not Allowed
@@ -32,29 +29,17 @@ export default async function handler(
   }
 }
 
-async function getEvents(
+async function getEvent(
   req: NextApiRequest,
   res: NextApiResponse<calendarData[]>
 ) {
-  let { data: events, error } = await supabase.from("events").select("*");
+  let id = req.query.id;
+  let { data: events, error } = await supabase
+    .from("events")
+    .select("*")
+    .eq("id", id);
 
   res.status(200).json(events);
-}
-
-async function createEvent(req: NextApiRequest, res: NextApiResponse) {
-  const { title, detail, allDay, startTimestamp, endTimestamp, bgColor } =
-    req.body;
-
-  let { data: event, error } = await supabase
-    .from("events")
-    .insert([{ title, detail, allDay, startTimestamp, endTimestamp, bgColor }])
-    .select("*")
-    .single();
-
-  res.status(200).json({
-    resCode: "200",
-    data: event,
-  });
 }
 
 async function updateEvent(req: NextApiRequest, res: NextApiResponse) {
@@ -73,6 +58,23 @@ async function updateEvent(req: NextApiRequest, res: NextApiResponse) {
       endTimestamp,
       bgColor,
     })
+    .eq("id", id)
+    .select("*")
+    .single();
+
+  res.status(200).json({
+    resCode: "200",
+    data: event,
+  });
+}
+
+async function deleteEvent(req: NextApiRequest, res: NextApiResponse) {
+  const id = req.query.id;
+
+  let { data: event, error } = await supabase
+
+    .from("events")
+    .delete()
     .eq("id", id)
     .select("*")
     .single();

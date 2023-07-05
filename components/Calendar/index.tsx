@@ -12,12 +12,18 @@ type currentDate = {
   day: number;
   month: number;
   year: number;
-}
+};
+
+type callback = {
+  action: string;
+  data?: currentDate;
+};
 
 const fetcher = (url) => fetch(url).then((r) => r.json());
 
 export default function Calendar({ urlFetch }: Props) {
   const [page, setPage] = useState(1);
+  const [editMode, setEditMode] = useState(false);
   const [currentDate, setCurrentDate] = useState<currentDate>();
 
   const {
@@ -32,11 +38,26 @@ export default function Calendar({ urlFetch }: Props) {
     setPage(2);
   }
 
-  function handleActions(callback: any) {
+  function handleActions(callback: callback) {
     console.log(callback);
     switch (callback.action) {
       case "back":
-        setPage(1);
+        if (editMode) {
+          // const target = new Date(
+          //   callback.data.year,
+          //   callback.data.month,
+          //   callback.data.day
+          // );
+          // setCurrentDate({
+          //   day: target.getDate(),
+          //   month: target.getMonth(),
+          //   year: target.getFullYear(),
+          // });
+          setEditMode(false);
+          setPage(2);
+        } else {
+          setPage(1);
+        }
         break;
       case "event":
         setPage(2);
@@ -44,12 +65,16 @@ export default function Calendar({ urlFetch }: Props) {
         break;
       case "add":
         setPage(3);
-        console.log("📦", callback.data);
         setCurrentDate(callback.data);
         break;
       case "save":
         mutate([...events, callback.data], false);
         setPage(1);
+        break;
+      case "edit":
+        setPage(3);
+        setCurrentDate(callback.data);
+        setEditMode(true);
         break;
 
       default:
@@ -60,9 +85,19 @@ export default function Calendar({ urlFetch }: Props) {
   return (
     <React.Fragment>
       {page === 1 && <MainCalendar data={events} onClick={handleActions} />}
-      {page === 2 && <Timeline onClick={handleActions} data={events} currentDate={currentDate} />}
+      {page === 2 && (
+        <Timeline
+          onClick={handleActions}
+          data={events}
+          currentDate={currentDate}
+        />
+      )}
       {page === 3 && (
-        <FormEvent onClick={handleActions} currentDate={currentDate} />
+        <FormEvent
+          onClick={handleActions}
+          currentDate={currentDate}
+          editMode={editMode}
+        />
       )}
     </React.Fragment>
   );

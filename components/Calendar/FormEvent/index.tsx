@@ -24,6 +24,7 @@ type Props = {
         year: number;
       }
     | any;
+  editMode?: boolean;
 };
 
 interface formEvent extends calendarData {
@@ -37,16 +38,22 @@ const bgColor = ["#3498db", "#2ecc71", "#f1c40f", "#e74c3c", "#8338ec"];
 
 const TEXT_EDITOR = false;
 
-export default function FormEvent({ onClick, currentDate }: Props) {
+export default function FormEvent({ onClick, currentDate, editMode }: Props) {
   const [editorState, setEditorState] = useState<EditorState>();
   const { register, handleSubmit, watch, setValue } = useForm();
 
   const watchAllDay = watch("allDay");
 
   function handleClick() {
-    onClick({
-      action: "back",
-    });
+    if (editMode) {
+      onClick({
+        action: "back",
+      });
+    } else {
+      onClick({
+        action: "back",
+      });
+    }
   }
 
   function handleEditorChange(state: any) {
@@ -84,27 +91,88 @@ export default function FormEvent({ onClick, currentDate }: Props) {
   }
 
   useEffect(() => {
-    setValue("allDay", true);
-    setValue(
-      "startDay",
-      `${currentDate?.year}-${
-        currentDate?.month > 10
-          ? currentDate?.month + 1
-          : "0" + (currentDate?.month + 1)
-      }-${currentDate?.day > 10 ? currentDate?.day : "0" + currentDate?.day}`
-    );
-    setValue(
-      "endDay",
-      `${currentDate?.year}-${
-        currentDate?.month > 10
-          ? currentDate?.month + 1
-          : "0" + (currentDate?.month + 1)
-      }-${currentDate?.day > 10 ? currentDate?.day : "0" + currentDate?.day}`
-    );
-    setValue("bgColor", "#3498db");
-    setValue("startTime", "00:00:00");
-    setValue("endTime", "23:59:00");
-  }, []);
+    if (editMode) {
+      console.log("useEffect", currentDate);
+      const editDateStart = new Date(currentDate?.startTimestamp);
+      //timestamp to date
+      setValue(
+        "startDay",
+        `${editDateStart.getFullYear()}-${
+          editDateStart.getMonth() > 10
+            ? editDateStart.getMonth() + 1
+            : "0" + (editDateStart.getMonth() + 1)
+        }-${
+          editDateStart.getDate() > 10
+            ? editDateStart.getDate()
+            : "0" + editDateStart.getDate()
+        }`
+      );
+      setValue(
+        "startTime",
+        `${
+          editDateStart.getHours() > 10
+            ? editDateStart.getHours()
+            : "0" + editDateStart.getHours()
+        }:${
+          editDateStart.getMinutes() > 10
+            ? editDateStart.getMinutes()
+            : "0" + editDateStart.getMinutes()
+        }:00`
+      );
+
+      const editDateEnd = new Date(currentDate?.endTimestamp);
+      setValue(
+        "endDay",
+        `${editDateEnd.getFullYear()}-${
+          editDateEnd.getMonth() > 10
+            ? editDateEnd.getMonth() + 1
+            : "0" + (editDateEnd.getMonth() + 1)
+        }-${
+          editDateEnd.getDate() > 10
+            ? editDateEnd.getDate()
+            : "0" + editDateEnd.getDate()
+        }`
+      );
+      setValue(
+        "endTime",
+        `${
+          editDateEnd.getHours() > 10
+            ? editDateEnd.getHours()
+            : "0" + editDateEnd.getHours()
+        }:${
+          editDateEnd.getMinutes() > 10
+            ? editDateEnd.getMinutes()
+            : "0" + editDateEnd.getMinutes()
+        }:00`
+      );
+
+      setValue("allDay", currentDate?.allDay);
+      setValue("title", currentDate?.title);
+      setValue("detail", currentDate?.detail);
+      setValue("bgColor", currentDate?.bgColor);
+    } else {
+      setValue("allDay", true);
+      setValue(
+        "startDay",
+        `${currentDate?.year}-${
+          currentDate?.month > 10
+            ? currentDate?.month + 1
+            : "0" + (currentDate?.month + 1)
+        }-${currentDate?.day > 10 ? currentDate?.day : "0" + currentDate?.day}`
+      );
+      setValue(
+        "endDay",
+        `${currentDate?.year}-${
+          currentDate?.month > 10
+            ? currentDate?.month + 1
+            : "0" + (currentDate?.month + 1)
+        }-${currentDate?.day > 10 ? currentDate?.day : "0" + currentDate?.day}`
+      );
+      setValue("bgColor", "#3498db");
+      setValue("startTime", "00:00:00");
+      setValue("endTime", "23:59:00");
+    }
+  }, [editMode]);
 
   return (
     <>

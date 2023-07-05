@@ -62,6 +62,13 @@ export default function Timeline({ onClick, data, currentDate }: Props) {
     });
   }
 
+  function handleEditEvent(event: calendarData) {
+    onClick({
+      action: "edit",
+      data: event,
+    });
+  }
+
   useEffect(() => {
     const day = currentDate.day;
     const month = currentDate.month;
@@ -111,7 +118,7 @@ export default function Timeline({ onClick, data, currentDate }: Props) {
           Add Event
         </button>
       </div>
-      {/* {JSON.stringify(Events)} */}
+      {JSON.stringify(currentDate)}
       <div className={styles.calendar_wrapper}>
         <div className={styles.header}>
           <div className={styles.titleDate}>
@@ -127,7 +134,7 @@ export default function Timeline({ onClick, data, currentDate }: Props) {
         </div>
         {Events.length > 0 ? (
           Events.map((event: calendarData) => (
-            <EventItem event={event} key={event.id} />
+            <EventItem event={event} key={event.id} onEdit={handleEditEvent} />
           ))
         ) : (
           <div className={styles.noEvent}>ไม่มีกิจกรรม</div>
@@ -137,7 +144,13 @@ export default function Timeline({ onClick, data, currentDate }: Props) {
   );
 }
 
-function EventItem({ event }: { event: calendarData }) {
+function EventItem({
+  event,
+  onEdit,
+}: {
+  event: calendarData;
+  onEdit?: Function;
+}) {
   const startDate = dayjs(event.startTimestamp).format("HH");
   const endDate = dayjs(event.endTimestamp).format("HH");
   const allDay = event.allDay;
@@ -150,6 +163,10 @@ function EventItem({ event }: { event: calendarData }) {
     for (let index = 0; index < startSpace; index++) {
       EmtyArray.push(`space${index}`);
     }
+  }
+
+  function handleEditEvent(event: calendarData) {
+    onEdit(event);
   }
 
   return (
@@ -168,6 +185,7 @@ function EventItem({ event }: { event: calendarData }) {
         <div>
           <div
             className={allDay ? styles.eventTagAllDay : styles.eventTag}
+            onClick={() => handleEditEvent(event)}
             style={{
               backgroundColor: event.bgColor,
               width:

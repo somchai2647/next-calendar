@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { calendarData } from "../../components/Calendar/interface";
+import { calendarData } from "../../../components/Calendar/interface";
 
 import { createClient } from "@supabase/supabase-js";
 
@@ -21,7 +21,7 @@ export default async function handler(
       await createEvent(req, res);
       break;
     case "PUT":
-      // await updateEvent(req, res);
+      await updateEvent(req, res);
       break;
     case "DELETE":
       // await deleteEvent(req, res);
@@ -54,6 +54,32 @@ async function createEvent(req: NextApiRequest, res: NextApiResponse) {
   res.status(200).json({
     resCode: "200",
     data: event,
+  });
+}
+
+async function updateEvent(req: NextApiRequest, res: NextApiResponse) {
+  const { title, detail, allDay, startTimestamp, endTimestamp, bgColor } =
+    req.body;
+
+  const id = req.query.id;
+
+  // let { data: event, error } = await supabase
+  //   .from("events")
+  //   .update({
+  //     title,
+  //     detail,
+  //     allDay,
+  //     startTimestamp,
+  //     endTimestamp,
+  //     bgColor,
+  //   })
+  //   .eq("id", id)
+  //   .select("*")
+  //   .single();
+
+  res.status(200).json({
+    resCode: "200",
+    data: id,
   });
 }
 

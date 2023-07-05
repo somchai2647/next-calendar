@@ -79,22 +79,30 @@ export default function FormEvent({ onClick, currentDate, editMode }: Props) {
 
     // console.log("📦", newObj);
 
-    const res = await axios.post("/api/calendar", newObj);
-    const data = await res.data;
+    let res = null;
+    let data = null;
 
-    // console.log("👍", data);
+    if (editMode) {
+      res = await axios.put(`/api/calendar/${currentDate.id}`, newObj);
+    } else {
+      res = await axios.post("/api/calendar", newObj);
+    }
+
+    data = await res.data;
 
     onClick({
-      action: "save",
-      data: data.data,
+      action: editMode ? "updated" : "save",
+      data: currentDate,
+      payload: data.data,
     });
+
+    // console.log("👍", data);
   }
 
   useEffect(() => {
     if (editMode) {
-      console.log("useEffect", currentDate);
       const editDateStart = new Date(currentDate?.startTimestamp);
-      //timestamp to date
+      const editDateEnd = new Date(currentDate?.endTimestamp);
       setValue(
         "startDay",
         `${editDateStart.getFullYear()}-${
@@ -120,7 +128,6 @@ export default function FormEvent({ onClick, currentDate, editMode }: Props) {
         }:00`
       );
 
-      const editDateEnd = new Date(currentDate?.endTimestamp);
       setValue(
         "endDay",
         `${editDateEnd.getFullYear()}-${

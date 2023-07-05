@@ -118,7 +118,7 @@ export default function Timeline({ onClick, data, currentDate }: Props) {
           Add Event
         </button>
       </div>
-      {JSON.stringify(currentDate)}
+      {/* {JSON.stringify(currentDate)} */}
       <div className={styles.calendar_wrapper}>
         <div className={styles.header}>
           <div className={styles.titleDate}>

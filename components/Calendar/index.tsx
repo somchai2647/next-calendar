@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import MainCalendar from "./MainCalendar";
 import FormEvent from "./FormEvent";
 import Timeline from "./Timeline";
-import { CallBackDate } from "./interface";
+import { CallBackDate, calendarData } from "./interface";
 import useSWR from "swr";
 type Props = {
   urlFetch?: string;
@@ -17,6 +17,7 @@ type currentDate = {
 type callback = {
   action: string;
   data?: currentDate;
+  payload?: calendarData;
 };
 
 const fetcher = (url) => fetch(url).then((r) => r.json());
@@ -39,6 +40,7 @@ export default function Calendar({ urlFetch }: Props) {
   }
 
   function handleActions(callback: callback) {
+    //callback
     console.log(callback);
     switch (callback.action) {
       case "back":
@@ -54,7 +56,7 @@ export default function Calendar({ urlFetch }: Props) {
           //   year: target.getFullYear(),
           // });
           setEditMode(false);
-          setPage(2);
+          setPage(1);
         } else {
           setPage(1);
         }
@@ -68,7 +70,19 @@ export default function Calendar({ urlFetch }: Props) {
         setCurrentDate(callback.data);
         break;
       case "save":
-        mutate([...events, callback.data], false);
+        mutate([...events, callback.payload], false);
+        setPage(1);
+        break;
+      case "updated":
+        const index = events.findIndex(
+          (item: calendarData) => item.id === callback.payload.id
+        );
+        let newEvents = [...events];
+
+        newEvents[index] = callback.payload;
+
+        mutate(newEvents);
+
         setPage(1);
         break;
       case "edit":

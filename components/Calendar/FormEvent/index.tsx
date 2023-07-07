@@ -6,13 +6,6 @@ import Image from "next/image";
 import checkIcn from "./check-icn.svg";
 import axios from "axios";
 
-import dynamic from "next/dynamic";
-
-const Editor = dynamic(
-  () => import("../TextEditor").then((mod) => mod.default),
-  { ssr: false }
-);
-
 type Props = {
   onClick: Function | any;
   currentDate:
@@ -251,12 +244,6 @@ export default function FormEvent({ onClick, currentDate, editMode }: Props) {
           rows={5}
           {...register("detail")}
         ></textarea>
-        {TEXT_EDITOR && (
-          <Editor
-          // editorState={editorState}
-          // onEditorStateChange={handleEditorChange}
-          />
-        )}
 
         <div className={styles.warpperColor}>
           <label htmlFor="bgColor">สี</label>

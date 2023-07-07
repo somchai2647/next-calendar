@@ -7,8 +7,6 @@ import checkIcn from "./check-icn.svg";
 import axios from "axios";
 
 import dynamic from "next/dynamic";
-import { EditorState } from "react-draft-wysiwyg";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 const Editor = dynamic(
   () => import("../TextEditor").then((mod) => mod.default),
@@ -39,7 +37,6 @@ const bgColor = ["#3498db", "#2ecc71", "#f1c40f", "#e74c3c", "#8338ec"];
 const TEXT_EDITOR = false;
 
 export default function FormEvent({ onClick, currentDate, editMode }: Props) {
-  const [editorState, setEditorState] = useState<EditorState>();
   const { register, handleSubmit, watch, setValue } = useForm();
 
   const watchAllDay = watch("allDay");
@@ -55,11 +52,6 @@ export default function FormEvent({ onClick, currentDate, editMode }: Props) {
       });
     }
   }
-
-  function handleEditorChange(state: any) {
-    setEditorState(state);
-  }
-
   async function onSave(e: formEvent) {
     const { startDay, endDay, startTime, endTime, title, detail, bgColor } = e;
 
@@ -68,9 +60,7 @@ export default function FormEvent({ onClick, currentDate, editMode }: Props) {
     const newObj: calendarData = {
       title,
       //@ts-ignore
-      detail: !TEXT_EDITOR
-        ? detail
-        : editorState?.getCurrentContent().toObject(),
+      detail: detail,
       startTimestamp: new Date(`${startDay} ${startTime}`).getTime(),
       endTimestamp: new Date(`${endDay} ${endTime}`).getTime(),
       allDay: watchAllDay,
@@ -101,7 +91,6 @@ export default function FormEvent({ onClick, currentDate, editMode }: Props) {
 
   async function onDelete() {
     try {
-      
       const res = await axios.delete(`/api/calendar/${currentDate.id}`);
       const data = await res.data;
 
